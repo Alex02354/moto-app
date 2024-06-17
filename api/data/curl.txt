@@ -1,0 +1,35 @@
+Get all events command
+curl -X GET http://localhost:3000/events
+
+Create event command
+curl -X POST http://localhost:3000/events \
+-H "Content-Type: application/json" \
+-d '{
+  "coordinates": [45.464743, 9.189135799999999],
+  "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/nike/nike1.png",
+  "map": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/nike/nike1.png",
+  "title": "SERBIA-BOSNIA and Herzegovina",
+  "access": 1,
+  "date": "2024-06-17T09:26:15Z",
+  "section": "kemp",
+  "description": "Inspired by the original that debuted in 1985, the Air Jordan 1 Low delivers a clean."
+}'
+
+Update event command
+curl -X PUT -H "Content-Type: application/json" -d '{
+  "title": "Updated Event Title",
+  "description": "Updated description",
+  "coordinates": [45.464743, 9.189135799999999],
+  "image": "https://example.com/newimage.png",
+  "map": "https://example.com/newmap.png",
+  "access": 2,
+  "date": "2024-07-17T09:26:15Z",
+  "section": "newsection"
+}' http://localhost:3000/events/66700ab3f04fb4b86050aa79
+
+Delete event command
+curl -X DELETE http://localhost:3000/events/66700ab3f04fb4b86050aa79
+
+mongoDB user: moto
+password: hSvx8b$Du7@f4AY
+URL event: https://cloud.mongodb.com/v2/666a1a2006dcde3c7d57fd5a#/metrics/replicaSet/666a1a891993981617d78297/explorer/test/events/find

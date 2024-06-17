@@ -16,10 +16,12 @@ const getDB = () => {
   const database = client.db("test");
   const products = database.collection("products");
   const orders = database.collection("orders");
+  const events = database.collection("events");
 
   return {
     products,
     orders,
+    events,
   };
 };
 
