@@ -8,11 +8,13 @@ import {
   updateEvent,
 } from "../database/events.js";
 
+// Get all events
 router.get("/", async (req, res) => {
   const events = await getAllEvents();
   res.send({ status: "OK", data: events });
 });
 
+// Get event by id
 router.get("/:eventId", async (req, res) => {
   try {
     const event = await getEvent(req.params.eventId);
@@ -27,7 +29,7 @@ router.get("/:eventId", async (req, res) => {
     res.status(401).send({ status: "FAILED", error: e.message });
   }
 });
-
+// Create event endpoint
 router.post("/", async (req, res) => {
   const eventData = req.body;
 
