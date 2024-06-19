@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  /*  signin, */
+  signin,
   signup,
   /* google,
   signout, */
@@ -9,8 +9,8 @@ import {
 const router = express.Router();
 
 router.post("/signup", signup);
-/* router.post("/signin", signin);
-router.post("/google", google);
+router.post("/signin", signin);
+/*router.post("/google", google);
 router.get("/signout", signout); */
 
 export default router;
