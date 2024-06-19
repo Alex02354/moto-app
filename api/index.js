@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRoutes from "./routes/user.route.js";
-import authRoutes from "./routes/user.route.js";
+import authRoutes from "./routes/auth.route.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import bodyParser from "body-parser";
 
@@ -19,6 +19,8 @@ mongoose
 
 const app = express();
 
+/* app.use(express.json()); */
+
 app.listen(3000, () => {
   console.log("Server listening on port", 3000);
 });
@@ -32,3 +34,13 @@ app.get("/", (req, res) => {
 
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+
+app.use((err, reg, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal server error";
+  return res.status(statusCode).json({
+    success: false,
+    message,
+    statusCode,
+  });
+});
