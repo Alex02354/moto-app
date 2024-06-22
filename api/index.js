@@ -7,6 +7,7 @@ import eventRoutes from "./routes/eventRoutes.js";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import path from "path";
+import cors from "cors";
 
 dotenv.config();
 
@@ -19,17 +20,24 @@ mongoose
     console.log(err);
   });
 
-const __dirname = path.resolve();
+/* const __dirname = path.resolve(); */
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, "/client/dist")));
+/* app.use(express.static(path.join(__dirname, "/client/dist")));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
+}); */
 
 /* app.use(express.json()); */
+
+// Enable CORS for client route 5173
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend's URL
+  })
+);
 
 app.use(cookieParser());
 
