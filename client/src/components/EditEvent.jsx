@@ -4,22 +4,22 @@ import Modal from "./Modal";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
-const AddEvent = ({ onSubmitSuccess }) => {
+const EditEvent = ({ event, onSubmitSuccess }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [eventData, setEventData] = useState({
-    title: "",
-    description: "",
-    image: "",
-    map: "",
-    coordinates: "",
-    access: 0,
-    date: "",
-    section: "",
+    title: event.title,
+    description: event.description,
+    image: event.image,
+    map: event.map,
+    coordinates: event.coordinates.join(","),
+    access: event.access,
+    date: event.date,
+    section: event.section,
   });
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const user = useSelector((state) => state.user); // Replace with the actual path to the user in your Redux state
+  const user = useSelector((state) => state.user.currentUser); // Replace with the actual path to the user in your Redux state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,22 +30,12 @@ const AddEvent = ({ onSubmitSuccess }) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/events`, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/events/${event._id}`, {
         ...eventData,
         coordinates: eventData.coordinates.split(",").map(Number),
-        user, // Include the user in the event data
+        user: { currentUser: user }, // Nested user structure
       });
       setModalOpen(false);
-      setEventData({
-        title: "",
-        description: "",
-        image: "",
-        map: "",
-        coordinates: "",
-        access: 0,
-        date: "",
-        section: "",
-      }); // Clear form data
       onSubmitSuccess();
     } catch (err) {
       setError(err.message);
@@ -56,12 +46,12 @@ const AddEvent = ({ onSubmitSuccess }) => {
 
   return (
     <>
-      <button onClick={() => setModalOpen(true)} className="btn btn-primary">
-        Add New Event
+      <button onClick={() => setModalOpen(true)} className="btn btn-secondary">
+        Edit Event
       </button>
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
-          <h3 className="text-xl font-bold mb-4">Add New Event</h3>
+          <h3 className="text-xl font-bold mb-4">Edit Event</h3>
           {error && <div className="text-red-500">{error}</div>}
           <div className="form-control">
             <label className="label">Title</label>
@@ -163,8 +153,9 @@ const AddEvent = ({ onSubmitSuccess }) => {
   );
 };
 
-AddEvent.propTypes = {
+EditEvent.propTypes = {
+  event: PropTypes.object.isRequired,
   onSubmitSuccess: PropTypes.func.isRequired,
 };
 
-export default AddEvent;
+export default EditEvent;
