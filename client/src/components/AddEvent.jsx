@@ -30,7 +30,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/events`, {
+      await axios.post("/events", {
         ...eventData,
         coordinates: eventData.coordinates.split(",").map(Number),
         user, // Include the user in the event data

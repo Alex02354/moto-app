@@ -30,7 +30,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}/events/${event._id}`, {
+      await axios.put(`/events/${event._id}`, {
         ...eventData,
         coordinates: eventData.coordinates.split(",").map(Number),
         user: { currentUser: user }, // Nested user structure

@@ -19,9 +19,7 @@ const EventDetail = () => {
 
   const fetchEvent = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/events/${id}`
-      );
+      const response = await axios.get(`/events/${id}`);
       setEvent(response.data.data);
     } catch (err) {
       setError(err.message);
