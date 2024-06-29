@@ -4,16 +4,16 @@ import axios from "axios";
 import EditEvent from "../components/EditEvent";
 import DeleteEvent from "../components/DeleteEvent";
 import { useSelector } from "react-redux";
-/* import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api"; */
+import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
 const EventDetail = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  /*   const { isLoaded } = useLoadScript({
+  const { isLoaded } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-  }); */
+  });
 
   const currentUser = useSelector((state) => state.user.currentUser);
 
@@ -100,7 +100,7 @@ const EventDetail = () => {
             )}
           </div>
         </div>
-        {/*  {isLoaded && coordinates && (
+        {isLoaded && coordinates && (
           <div className="w-96 h-96">
             <GoogleMap
               mapContainerStyle={{ width: "100%", height: "100%" }}
@@ -110,7 +110,7 @@ const EventDetail = () => {
               <Marker position={coordinates} />
             </GoogleMap>
           </div>
-        )} */}
+        )}
       </div>
     </main>
   );
