@@ -35,7 +35,7 @@ app.get("*", (req, res) => {
 // Enable CORS for client route 5173
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend's URL
+    origin: "https://moto-app.onrender.com", // Replace with your frontend's URL
   })
 );
 
