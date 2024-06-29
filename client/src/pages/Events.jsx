@@ -12,13 +12,9 @@ const Events = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/events`,
-        {
-          withCredentials: true, // Ensures cookies are sent
-        }
-      );
-      setEvents(response.data.data);
+      const response = await axios.get("/events");
+      setEvents(response.data);
+      console.log("Fetched events:", response.data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,8 +58,8 @@ const Events = () => {
                   <p>Access: {event.access}</p>
                   <p>Date: {new Date(event.date).toLocaleString()}</p>
                   <p>Section: {event.section}</p>
-                  {event.user && event.user.username && (
-                    <p>Created by: {event.user.username}</p>
+                  {event.user && event.user.currentUser && (
+                    <p>Created by: {event.user.currentUser.username}</p>
                   )}
                 </div>
                 <div className="card-actions justify-end">

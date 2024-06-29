@@ -22,7 +22,7 @@ mongoose
 
 const __dirname = path.resolve();
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 // Enable CORS for your frontend URL
 app.use(
