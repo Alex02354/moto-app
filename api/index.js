@@ -21,8 +21,17 @@ mongoose
   });
 
 const __dirname = path.resolve();
-
 const app = express();
+
+app.use(
+  cors({
+    origin: "https://moto-app.onrender.com", // Ensure this matches your frontend URL
+    credentials: true, // Allow cookies to be sent
+  })
+);
+
+app.use(cookieParser());
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 
@@ -30,32 +39,11 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
-/* app.use(express.json()); */
-
-// Enable CORS for client route 5173
-app.use(
-  cors({
-    origin: "https://moto-app.onrender.com", // Replace with your frontend's URL
-  })
-);
-
-app.use(cookieParser());
-
-app.listen(3000, () => {
-  console.log("Server listening on port", 3000);
-});
-
-app.use(bodyParser.json());
 app.use("/events", eventRoutes);
-
-app.get("/", (req, res) => {
-  res.send("<h2>Hello World</h2>");
-});
-
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
-app.use((err, reg, res, next) => {
+app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal server error";
   return res.status(statusCode).json({
@@ -63,4 +51,8 @@ app.use((err, reg, res, next) => {
     message,
     statusCode,
   });
+});
+
+app.listen(3000, () => {
+  console.log("Server listening on port", 3000);
 });
