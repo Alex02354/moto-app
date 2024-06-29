@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EditEvent from "../components/EditEvent";
 import DeleteEvent from "../components/DeleteEvent";
@@ -8,6 +8,7 @@ import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 
 const EventDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -59,6 +60,10 @@ const EventDetail = () => {
         }
       : null;
 
+  const handleDeleteSuccess = () => {
+    navigate("/events");
+  };
+
   return (
     <main className="max-w-8xl mx-auto mt-10">
       <div className="flex flex-wrap gap-4 mt-8 justify-center">
@@ -92,7 +97,7 @@ const EventDetail = () => {
                 <EditEvent event={event} onSubmitSuccess={fetchEvent} />
                 <DeleteEvent
                   eventId={event._id}
-                  onDeleteSuccess={() => (window.location.href = "/events")}
+                  onDeleteSuccess={handleDeleteSuccess}
                 />
               </>
             )}
