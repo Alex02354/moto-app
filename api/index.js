@@ -22,27 +22,32 @@ mongoose
 
 const __dirname = path.resolve();
 const app = express();
+const PORT = process.env.PORT || 3000;
 
+// Enable CORS for your frontend URL
 app.use(
   cors({
-    origin: "https://moto-app.onrender.com", // Ensure this matches your frontend URL
-    credentials: true, // Allow cookies to be sent
+    origin: "https://moto-app.onrender.com",
+    credentials: true,
   })
 );
 
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "/client/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
+// Serve static files from the frontend build
+app.use(express.static(path.join(__dirname, "client", "dist")));
 
 app.use("/events", eventRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
+// Catch-all handler to serve the frontend's index.html file
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+
+// Error handling middleware
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal server error";
@@ -53,6 +58,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(3000, () => {
-  console.log("Server listening on port", 3000);
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
