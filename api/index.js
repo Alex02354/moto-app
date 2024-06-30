@@ -11,6 +11,8 @@ import cors from "cors";
 
 dotenv.config();
 
+const app = express();
+
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
@@ -20,25 +22,26 @@ mongoose
     console.log(err);
   });
 
-const app = express();
-
+app.use(express.json());
 app.use(cors()); // Enable CORS for all routes
-
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// API routes
 app.use("/events", eventRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
+// Serve static files from the React app
 const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "client/dist")));
+app.use(express.static(path.join(__dirname, "client", "dist")));
 
+// The "catchall" handler: for any request that doesn't match one above, send back the React app's index.html file.
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
-const port = process.env.PORT || 10000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
