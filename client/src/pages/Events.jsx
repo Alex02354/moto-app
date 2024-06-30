@@ -26,7 +26,12 @@ const Events = () => {
     fetchEvents();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader"></div>
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -55,7 +60,7 @@ const Events = () => {
                 <h2 className="card-title">{event.title}</h2>
                 <div className="text-left">
                   <p>{event.description}</p>
-                  <p>Access: {event.access}</p>
+                  <p>Access: {event.access === 0 ? "Plane" : "Car"}</p>
                   <p>Date: {new Date(event.date).toLocaleString()}</p>
                   <p>Section: {event.section}</p>
                   {event.user && event.user.currentUser && (

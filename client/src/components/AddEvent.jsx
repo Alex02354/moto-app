@@ -119,14 +119,16 @@ const AddEvent = ({ onSubmitSuccess }) => {
           </div>
           <div className="form-control">
             <label className="label">Access Level</label>
-            <input
-              type="number"
+            <select
               name="access"
               value={eventData.access}
               onChange={handleChange}
-              className="input input-bordered"
+              className="select select-bordered"
               required
-            />
+            >
+              <option value={0}>Plane</option>
+              <option value={1}>Car</option>
+            </select>
           </div>
           <div className="form-control">
             <label className="label">Date</label>
@@ -141,14 +143,17 @@ const AddEvent = ({ onSubmitSuccess }) => {
           </div>
           <div className="form-control">
             <label className="label">Section</label>
-            <input
-              type="text"
+            <select
               name="section"
               value={eventData.section}
               onChange={handleChange}
-              className="input input-bordered"
+              className="select select-bordered"
               required
-            />
+            >
+              <option value="kemp">Kemp</option>
+              <option value="places">Places</option>
+              <option value="itinerary">Itinerary</option>
+            </select>
           </div>
           <button
             type="submit"
