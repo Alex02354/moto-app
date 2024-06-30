@@ -1,6 +1,7 @@
 import { MongoClient } from "mongodb";
 
-const uri = process.env.MONGO2;
+const uri =
+  "mongodb+srv://aabrahamek:EFZ1U7pi0upr82go@moto-app.cvsxjkv.mongodb.net/";
 
 let client;
 
