@@ -6,8 +6,16 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": { target: "http://localhost:3000", secure: false },
-      "/events": { target: "http://localhost:3000", secure: false },
+      "/api": {
+        target: "https://moto-app.onrender.com",
+        secure: true,
+        changeOrigin: true,
+      },
+      "/events": {
+        target: "https://moto-app.onrender.com",
+        secure: true,
+        changeOrigin: true,
+      },
     },
   },
 });

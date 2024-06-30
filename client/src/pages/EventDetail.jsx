@@ -40,7 +40,13 @@ const EventDetail = () => {
     }
   }, [currentUser, event]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="loader"></div>
+      </div>
+    );
+
   if (error) return <div>Error: {error}</div>;
   if (!event) return <div>Event not found</div>;
 
@@ -88,7 +94,7 @@ const EventDetail = () => {
                 Coordinates:{" "}
                 {coordinates ? `${coordinates.lat}, ${coordinates.lng}` : "N/A"}
               </p>
-              <p>Access: {event.access}</p>
+              <p>Access: {event.access === 0 ? "plane" : "car"}</p>
               <p>Date: {new Date(event.date).toLocaleString()}</p>
               <p>Section: {event.section}</p>
             </div>
