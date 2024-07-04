@@ -11,8 +11,6 @@ import cors from "cors";
 
 dotenv.config();
 
-const app = express();
-
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
@@ -22,32 +20,42 @@ mongoose
     console.log(err);
   });
 
-app.use(express.json());
-app.use(cors()); // Enable CORS for all routes
-app.use(bodyParser.json());
-app.use(cookieParser());
+/* const __dirname = path.resolve(); */
 
-// API routes
-app.use("/events", eventRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/auth", authRoutes);
+const app = express();
 
-// Serve static files from the React app
-const __dirname = path.resolve();
-app.use(express.static(path.join(__dirname, "client", "dist")));
+/* app.use(express.static(path.join(__dirname, "/client/dist")));
 
-// The "catchall" handler: for any request that doesn't match one above, send back the React app's index.html file.
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
+ */
+/* app.use(express.json()); */
 
-const port = process.env.PORT || 5000;
+// Enable CORS for client route 5173
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend's URL
+  })
+);
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+/* app.use(cookieParser()); */
+
+app.listen(3000, () => {
+  console.log("Server listening on port", 3000);
 });
 
-app.use((err, req, res, next) => {
+app.use(bodyParser.json());
+app.use("/api/events", eventRoutes);
+
+app.get("/", (req, res) => {
+  res.send("<h2>Hello World</h2>");
+});
+
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
+
+app.use((err, reg, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal server error";
   return res.status(statusCode).json({

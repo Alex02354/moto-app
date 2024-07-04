@@ -20,7 +20,7 @@ const EventDetail = () => {
 
   const fetchEvent = async () => {
     try {
-      const response = await axios.get(`/events/${id}`);
+      const response = await axios.get(`/api/events/${id}`);
       setEvent(response.data.data);
     } catch (err) {
       setError(err.message);

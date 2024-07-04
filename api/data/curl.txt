@@ -33,3 +33,6 @@ curl -X DELETE http://localhost:3000/events/66700ab3f04fb4b86050aa79
 mongoDB user: moto
 password: hSvx8b$Du7@f4AY
 URL events: https://cloud.mongodb.com/v2/666a1a2006dcde3c7d57fd5a#/metrics/replicaSet/666a1a891993981617d78297/explorer/test/events/find
+
+
+curl -X PUT http://localhost:3000/api/user/favourite/667737563a6c2c88f741f6a3

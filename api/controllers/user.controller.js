@@ -51,3 +51,31 @@ export const deleteUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const toggleFavourite = async (req, res) => {
+  const { eventId } = req.params;
+  const userId = req.user.id; // Assuming the user ID is set by the verifyToken middleware
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res
+        .status(404)
+        .send({ status: "FAILED", error: "User not found" });
+    }
+
+    const index = user.favourites.indexOf(eventId);
+    if (index === -1) {
+      user.favourites.push(eventId);
+    } else {
+      user.favourites.splice(index, 1);
+    }
+
+    await user.save();
+
+    res.send({ status: "OK", data: user });
+  } catch (error) {
+    res.status(500).send({ status: "FAILED", error: error.message });
+  }
+};

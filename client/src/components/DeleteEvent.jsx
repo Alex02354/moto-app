@@ -11,7 +11,7 @@ const DeleteEvent = ({ eventId, onDeleteSuccess }) => {
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
-      await axios.delete(`/events/${eventId}`);
+      await axios.delete(`/api/events/${eventId}`);
       onDeleteSuccess();
       setModalOpen(false);
     } catch (err) {

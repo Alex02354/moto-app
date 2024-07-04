@@ -8,7 +8,11 @@ const initialState = {
 
 const userSlice = createSlice({
   name: "user",
-  initialState,
+  initialState: {
+    currentUser: {
+      favourites: [],
+    },
+  },
   reducers: {
     signInStart: (state) => {
       state.loading = true;
@@ -51,6 +55,14 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = false;
     },
+    toggleFavourite: (state, action) => {
+      const index = state.currentUser.favourites.indexOf(action.payload);
+      if (index === -1) {
+        state.currentUser.favourites.push(action.payload);
+      } else {
+        state.currentUser.favourites.splice(index, 1);
+      }
+    },
   },
 });
 
@@ -65,6 +77,7 @@ export const {
   deleteUserStart,
   deleteUserSuccess,
   signOut,
+  toggleFavourite,
 } = userSlice.actions;
 
 export default userSlice.reducer;

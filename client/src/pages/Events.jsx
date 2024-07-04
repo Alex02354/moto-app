@@ -12,7 +12,7 @@ const Events = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("/events");
+      const response = await axios.get("api/events");
       setEvents(response.data.data);
       console.log("Fetched events:", response.data.data);
     } catch (err) {
@@ -44,40 +44,44 @@ const Events = () => {
           <p>You must be signed in to add an event.</p>
         )}
         <div className="flex flex-wrap gap-4 mt-8 justify-center">
-          {events.map((event) => (
-            <div
-              key={event._id}
-              className="card card-compact w-96 bg-base-100 shadow-xl"
-            >
-              <figure>
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="w-full h-full object-cover"
-                />
-              </figure>
-              <div className="card-body">
-                <h2 className="card-title">{event.title}</h2>
-                <div className="text-left">
-                  <p>{event.description}</p>
-                  <p>Access: {event.access === 0 ? "Plane" : "Car"}</p>
-                  <p>Date: {new Date(event.date).toLocaleString()}</p>
-                  <p>Section: {event.section}</p>
-                  {event.user && event.user.currentUser && (
-                    <p>Created by: {event.user.currentUser.username}</p>
-                  )}
-                </div>
-                <div className="card-actions justify-end">
-                  <Link
-                    to={`/events/${event._id}`}
-                    className="btn btn-primary mt-2"
-                  >
-                    View Event
-                  </Link>
+          {events && events.length > 0 ? (
+            events.map((event) => (
+              <div
+                key={event._id}
+                className="card card-compact w-96 bg-base-100 shadow-xl"
+              >
+                <figure>
+                  <img
+                    src={event.image}
+                    alt={event.title}
+                    className="w-full h-full object-cover"
+                  />
+                </figure>
+                <div className="card-body">
+                  <h2 className="card-title">{event.title}</h2>
+                  <div className="text-left">
+                    <p>{event.description}</p>
+                    <p>Access: {event.access === 0 ? "Plane" : "Car"}</p>
+                    <p>Date: {new Date(event.date).toLocaleString()}</p>
+                    <p>Section: {event.section}</p>
+                    {event.user && event.user.currentUser && (
+                      <p>Created by: {event.user.currentUser.username}</p>
+                    )}
+                  </div>
+                  <div className="card-actions justify-end">
+                    <Link
+                      to={`/events/${event._id}`}
+                      className="btn btn-primary mt-2"
+                    >
+                      View Event
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No events available</p>
+          )}
         </div>
       </div>
     </main>
