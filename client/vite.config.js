@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": { target: "https://moto-app.onrender.com", secure: false },
+      "/events": { target: "https://moto-app.onrender.com", secure: false },
     },
   },
 });
