@@ -30,7 +30,7 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
-/* app.use(express.json()); */
+app.use(express.json());
 
 // Enable CORS for client route 5173
 app.use(
