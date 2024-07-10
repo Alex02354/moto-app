@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import Header from "./components/Header";
+import Footer from "./components/Footer"; // Import the Footer component
 import PrivateRoute from "./components/PrivateRoute";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
@@ -13,7 +14,7 @@ import "./global.css";
 export default function App() {
   return (
     <BrowserRouter>
-      {/* header */}
+      {/* Header */}
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -26,6 +27,8 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
+      {/* Footer */}
+      <Footer />
     </BrowserRouter>
   );
 }

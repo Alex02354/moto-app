@@ -1,11 +1,20 @@
 html {
   overflow-y: scroll;
 }
+
+body {
+  background-color: rgb(
+    182,
+    182,
+    182
+  ); /* Set the default background color to grey */
+  color: black; /* Set the default text color to black */
+}
+
 .map-container {
   margin-top: 20px;
 }
 
-/* Add this CSS to your global styles or in the same file using a styled-components approach */
 .loader {
   border: 8px solid #f3f3f3; /* Light grey */
   border-top: 8px solid #3498db; /* Blue */

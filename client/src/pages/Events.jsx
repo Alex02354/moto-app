@@ -3,6 +3,13 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AddEvent from "../components/AddEvent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCaravan,
+  faCarSide,
+  faTruckMonster,
+  faTruckPickup,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -34,50 +41,62 @@ const Events = () => {
     );
   if (error) return <div>Error: {error}</div>;
 
+  const getAccessIcon = (access) => {
+    const iconSize = "xl"; // Define the size of the icon
+    switch (access) {
+      case 0:
+        return <FontAwesomeIcon icon={faCaravan} size={iconSize} />;
+      case 1:
+        return <FontAwesomeIcon icon={faCarSide} size={iconSize} />;
+      default:
+        return <FontAwesomeIcon icon={faTruckMonster} size={iconSize} />;
+    }
+  };
+
+  // Sort events by date in descending order (newest first)
+  const sortedEvents = events.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
+
   return (
     <main className="max-w-7xl mx-auto mt-10">
       <div className="text-center my-5">
-        <h1 className="text-3xl font-bold text-slate-800 my-5">Events</h1>
         {currentUser ? (
           <AddEvent onSubmitSuccess={fetchEvents} />
         ) : (
           <p>You must be signed in to add an event.</p>
         )}
         <div className="flex flex-wrap gap-4 mt-8 justify-center">
-          {events && events.length > 0 ? (
-            events.map((event) => (
-              <div
+          {sortedEvents && sortedEvents.length > 0 ? (
+            sortedEvents.map((event) => (
+              <Link
                 key={event._id}
-                className="card card-compact w-96 bg-base-100 shadow-xl"
+                to={`/events/${event._id}`}
+                className="card w-96 bg-base-100 shadow-xl hover:border-yellow-400 border-2 border-black transition duration-300"
               >
-                <figure>
+                <figure className="px-5 pt-5">
                   <img
                     src={event.image}
                     alt={event.title}
-                    className="w-full h-full object-cover"
+                    className="rounded-xl"
                   />
                 </figure>
                 <div className="card-body">
-                  <h2 className="card-title">{event.title}</h2>
-                  <div className="text-left">
-                    <p>{event.description}</p>
-                    <p>Access: {event.access === 0 ? "Plane" : "Car"}</p>
-                    <p>Date: {new Date(event.date).toLocaleString()}</p>
-                    <p>Section: {event.section}</p>
-                    {event.user && event.user.currentUser && (
-                      <p>Created by: {event.user.currentUser.username}</p>
-                    )}
+                  <div className="flex items-center">
+                    {getAccessIcon(event.access)}
                   </div>
-                  <div className="card-actions justify-end">
-                    <Link
-                      to={`/events/${event._id}`}
-                      className="btn btn-primary mt-2"
-                    >
-                      View Event
-                    </Link>
+                  <h2 className="card-title text-lime-800 font-bold mt-0">
+                    {event.title}
+                  </h2>
+                  <div className="text-left mt-0">
+                    <p>
+                      {event.description}
+                      {" --- "}
+                      {new Date(event.date).toLocaleDateString()}
+                    </p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))
           ) : (
             <p>No events available</p>

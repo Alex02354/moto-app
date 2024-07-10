@@ -20,38 +20,17 @@ mongoose
     console.log(err);
   });
 
-/* const __dirname = path.resolve(); */
-
 const app = express();
 
-/* app.use(express.static(path.join(__dirname, "/client/dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
-});
- */
-/* app.use(express.json()); */
-
-// Enable CORS for client route 5173
+// Enable CORS for client route 5173 during development
 app.use(
   cors({
     origin: "http://localhost:5173", // Replace with your frontend's URL
   })
 );
 
-/* app.use(cookieParser()); */
-
-app.listen(3000, () => {
-  console.log("Server listening on port", 3000);
-});
-
 app.use(bodyParser.json());
 app.use("/api/events", eventRoutes);
-
-app.get("/", (req, res) => {
-  res.send("<h2>Hello World</h2>");
-});
-
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
@@ -63,4 +42,15 @@ app.use((err, reg, res, next) => {
     message,
     statusCode,
   });
+});
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "client", "dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+
+app.listen(3000, () => {
+  console.log("Server listening on port", 3000);
 });
