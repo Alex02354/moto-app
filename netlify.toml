@@ -1,9 +1,10 @@
 [build]
-  base    = "moto/client"
-  publish = "moto/client/dist"
+  base    = "client"
+  publish = "client/dist"
   command = "npm run build"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+

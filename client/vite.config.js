@@ -5,10 +5,14 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": { target: "http://localhost:3000", secure: false },
+      "/api": {
+        target: "http://localhost:3000",
+        changeOrigin: true, // Add this line
+        secure: false,
+      },
     },
   },
   build: {
-    outDir: "../dist", // Adjust output directory if needed
+    outDir: "../dist", // Ensure this path is correct
   },
 });

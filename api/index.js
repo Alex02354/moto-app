@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import path from "path";
 import cors from "cors";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -22,19 +23,35 @@ mongoose
 
 const app = express();
 
-// Enable CORS for client route 5173 during development
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Enable CORS for client route 5173
 app.use(
   cors({
     origin: "http://localhost:5173", // Replace with your frontend's URL
   })
 );
 
+// Middleware
 app.use(bodyParser.json());
+app.use(cookieParser());
+
+// API routes
 app.use("/api/events", eventRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
-app.use((err, reg, res, next) => {
+// Serve static files
+app.use(express.static(path.join(__dirname, "../dist"))); // Adjust path if needed
+
+// Catch-all route to serve the front-end application
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist", "index.html")); // Adjust path if needed
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal server error";
   return res.status(statusCode).json({
@@ -42,13 +59,6 @@ app.use((err, reg, res, next) => {
     message,
     statusCode,
   });
-});
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, "client", "dist")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
 app.listen(3000, () => {
