@@ -5,6 +5,12 @@ import EditEvent from "../components/EditEvent";
 import DeleteEvent from "../components/DeleteEvent";
 import { useSelector } from "react-redux";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCaravan,
+  faCarSide,
+  faTruckMonster,
+} from "@fortawesome/free-solid-svg-icons";
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -70,56 +76,84 @@ const EventDetail = () => {
     navigate("/events");
   };
 
+  const renderAccessIcon = () => {
+    const iconSize = "lg"; // Adjust icon size as needed
+    switch (event.access) {
+      case 0:
+        return <FontAwesomeIcon icon={faCaravan} size={iconSize} />;
+      case 1:
+        return <FontAwesomeIcon icon={faCarSide} size={iconSize} />;
+      default:
+        return <FontAwesomeIcon icon={faTruckMonster} size={iconSize} />;
+    }
+  };
+
   return (
-    <main className="max-w-8xl mx-auto mt-10">
-      <div className="flex flex-wrap gap-4 mt-8 justify-center">
-        <div
-          key={event._id}
-          className="card card-compact w-96 bg-base-100 shadow-xl"
-        >
-          <figure>
+    <main className="max-w-4xl mx-auto mt-5 p-4">
+      <div className="flex flex-col gap-8">
+        <div className="bg-white p-6 rounded-lg shadow-lg">
+          <h1 className="text-4xl font-bold mb-6 text-slate-800 text-center">
+            {event.title}
+          </h1>
+          <div className="flex flex-col gap-8">
             <img
               src={event.image}
               alt={event.title}
-              className="w-full h-full object-cover"
+              className="w-full h-auto object-cover rounded-lg shadow-lg"
             />
-          </figure>
-          <div className="card-body">
-            <div className="text-left">
-              <h1 className="text-3xl font-bold mb-4 text-slate-800">
-                {event.title}
-              </h1>
-              <p>{event.description}</p>
-              <p>
-                Coordinates:{" "}
-                {coordinates ? `${coordinates.lat}, ${coordinates.lng}` : "N/A"}
-              </p>
-              <p>Access: {event.access === 0 ? "plane" : "car"}</p>
-              <p>Date: {new Date(event.date).toLocaleString()}</p>
-              <p>Section: {event.section}</p>
+            <div className="flex flex-col md:flex-row gap-8">
+              <div className="md:w-1/2 w-full flex flex-col gap-4">
+                <div className="text-left">
+                  <p className="mb-4">{event.description}</p>
+                  <p className="mb-2">
+                    <strong>Access:</strong> {renderAccessIcon()}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Date:</strong>{" "}
+                    {new Date(event.date).toLocaleDateString()}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Country:</strong> {event.country}
+                  </p>
+                  <p className="mb-2">
+                    <strong>Section:</strong> {event.section}
+                  </p>
+                  {event.user && event.user.currentUser && (
+                    <p>
+                      <strong>Created by:</strong>{" "}
+                      {event.user.currentUser.username}
+                    </p>
+                  )}
+                  {isEventOwner && (
+                    <div className="flex gap-4 mt-4">
+                      <EditEvent event={event} onSubmitSuccess={fetchEvent} />
+                      <DeleteEvent
+                        eventId={event._id}
+                        onDeleteSuccess={handleDeleteSuccess}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+              {isLoaded && coordinates && (
+                <div className="md:w-1/2 w-full h-96 rounded-lg overflow-hidden">
+                  <GoogleMap
+                    mapContainerStyle={{ width: "100%", height: "100%" }}
+                    center={coordinates}
+                    zoom={10}
+                  >
+                    <Marker position={coordinates} />
+                  </GoogleMap>
+                </div>
+              )}
             </div>
-            {isEventOwner && (
-              <>
-                <EditEvent event={event} onSubmitSuccess={fetchEvent} />
-                <DeleteEvent
-                  eventId={event._id}
-                  onDeleteSuccess={handleDeleteSuccess}
-                />
-              </>
-            )}
+            <img
+              src={event.map}
+              alt="Map"
+              className="w-full h-auto object-cover rounded-lg shadow-lg"
+            />
           </div>
         </div>
-        {isLoaded && coordinates && (
-          <div className="w-96 h-96">
-            <GoogleMap
-              mapContainerStyle={{ width: "100%", height: "100%" }}
-              center={coordinates}
-              zoom={10}
-            >
-              <Marker position={coordinates} />
-            </GoogleMap>
-          </div>
-        )}
       </div>
     </main>
   );

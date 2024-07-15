@@ -10,6 +10,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import Events from "./pages/Events";
 import EventDetail from "./pages/EventDetail";
 import "./global.css";
+import MyEvents from "./pages/MyEvents";
+import Country from "./pages/Country";
 
 export default function App() {
   return (
@@ -23,6 +25,8 @@ export default function App() {
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventDetail />} />
+        <Route path="/my-events" element={<MyEvents />} />
+        <Route path="/country" element={<Country />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>

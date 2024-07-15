@@ -12,7 +12,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
     image: event.image,
     map: event.map,
     coordinates: event.coordinates.join(","),
-    access: event.access,
+    access: event.access.toString(), // Convert access to string initially
     date: event.date,
     section: event.section,
   });
@@ -32,6 +32,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
     try {
       await axios.put(`/api/events/${event._id}`, {
         ...eventData,
+        access: parseInt(eventData.access, 10), // Ensure access is an integer
         coordinates: eventData.coordinates.split(",").map(Number),
         user: { currentUser: user }, // Nested user structure
       });
@@ -46,7 +47,10 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
 
   return (
     <>
-      <button onClick={() => setModalOpen(true)} className="btn btn-secondary">
+      <button
+        onClick={() => setModalOpen(true)}
+        className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg"
+      >
         Edit Event
       </button>
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
@@ -116,14 +120,15 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               className="select select-bordered"
               required
             >
-              <option value={0}>Plane</option>
-              <option value={1}>Car</option>
+              <option value="0">Caravan</option>
+              <option value="1">Car</option>
+              <option value="2">Offroad</option>
             </select>
           </div>
           <div className="form-control">
             <label className="label">Date</label>
             <input
-              type="datetime-local"
+              type="date" // Change input type to "date" to restrict time selection
               name="date"
               value={eventData.date}
               onChange={handleChange}
@@ -147,7 +152,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
           </div>
           <button
             type="submit"
-            className="btn btn-primary mt-4"
+            className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 my-2 px-4 rounded-lg"
             disabled={isSubmitting}
           >
             {isSubmitting ? "Loading..." : "Submit"}

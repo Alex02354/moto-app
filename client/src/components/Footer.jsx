@@ -1,5 +1,5 @@
 import React from "react";
-import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -7,26 +7,27 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 text-center">
         <div className="mb-4">
           <h2 className="text-2xl font-bold">Contact Us</h2>
-          <p>Email: contact@motoapp.com</p>
-          <p>Phone: (123) 456-7890</p>
+          <p>OFF-ROAD ON ROAD</p>
+          <p>Email: info@offroadonroad.sk</p>
+          <p>Phone: +421 904 675 465</p>
         </div>
         <div className="flex justify-center space-x-4 text-2xl">
           <a
-            href="https://www.facebook.com"
+            href="https://www.facebook.com/offroadonroad.sk"
             target="_blank"
             rel="noopener noreferrer"
           >
             <FaFacebook />
           </a>
           <a
-            href="https://www.twitter.com"
+            href="https://www.youtube.com/@off-roadonroad"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaTwitter />
+            <FaYoutube />
           </a>
           <a
-            href="https://www.instagram.com"
+            href="https://www.instagram.com/cviro85"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -36,7 +37,7 @@ export default function Footer() {
       </div>
       <hr className="border-slate-400 my-5 max-w-7xl mx-auto px-4" />
       <div className="text-center py-4 text-white">
-        © 2024 Your Company. All rights reserved.
+        © 2024 Bravio.sk All rights reserved.
       </div>
     </footer>
   );

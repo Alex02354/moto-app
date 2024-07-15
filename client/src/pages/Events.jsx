@@ -8,10 +8,9 @@ import {
   faCaravan,
   faCarSide,
   faTruckMonster,
-  faTruckPickup,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Events = () => {
+const Events = ({ country, currentUserId }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,8 +19,28 @@ const Events = () => {
   const fetchEvents = async () => {
     try {
       const response = await axios.get("/api/events");
-      setEvents(response.data.data);
-      console.log("Fetched events:", response.data.data);
+      let fetchedEvents = response.data.data;
+
+      console.log("Fetched Events:", fetchedEvents);
+
+      if (currentUserId) {
+        // Assuming each event has a 'user' object with an '_id' property
+        fetchedEvents = fetchedEvents.filter(
+          (event) => event.user && event.user.currentUser._id === currentUserId
+        );
+        console.log("Filtered Events by currentUserId:", fetchedEvents);
+      }
+
+      if (country) {
+        fetchedEvents = fetchedEvents.filter(
+          (event) => event.country === country
+        );
+        console.log("Filtered Events by country:", fetchedEvents);
+      }
+
+      setEvents(
+        fetchedEvents.sort((a, b) => new Date(b.date) - new Date(a.date))
+      );
     } catch (err) {
       setError(err.message);
     } finally {
@@ -31,18 +50,22 @@ const Events = () => {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [currentUserId, country]);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="loader"></div>
       </div>
     );
-  if (error) return <div>Error: {error}</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   const getAccessIcon = (access) => {
-    const iconSize = "xl"; // Define the size of the icon
+    const iconSize = "xl";
     switch (access) {
       case 0:
         return <FontAwesomeIcon icon={faCaravan} size={iconSize} />;
@@ -53,11 +76,6 @@ const Events = () => {
     }
   };
 
-  // Sort events by date in descending order (newest first)
-  const sortedEvents = events.sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
-  );
-
   return (
     <main className="max-w-7xl mx-auto mt-10">
       <div className="text-center my-5">
@@ -67,8 +85,8 @@ const Events = () => {
           <p>You must be signed in to add an event.</p>
         )}
         <div className="flex flex-wrap gap-4 mt-8 justify-center">
-          {sortedEvents && sortedEvents.length > 0 ? (
-            sortedEvents.map((event) => (
+          {events && events.length > 0 ? (
+            events.map((event) => (
               <Link
                 key={event._id}
                 to={`/events/${event._id}`}
@@ -93,6 +111,16 @@ const Events = () => {
                       {event.description}
                       {" --- "}
                       {new Date(event.date).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <div className="text-left mt-0">
+                    <p>
+                      <strong>Country:</strong> {event.country}
+                    </p>
+                  </div>
+                  <div className="text-left mt-0">
+                    <p>
+                      <strong>Section:</strong> {event.section}
                     </p>
                   </div>
                 </div>

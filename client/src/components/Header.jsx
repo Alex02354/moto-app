@@ -29,33 +29,28 @@ export default function Header() {
         <div className="flex justify-between items-center">
           <FontAwesomeIcon
             icon={isMobileMenuOpen ? faTimes : faBars}
-            className="lg:hidden cursor-pointer"
+            className="md:hidden cursor-pointer"
             onClick={toggleMobileMenu}
           />
-          <ul className="hidden lg:flex justify-evenly w-full">
+          <ul className="hidden md:flex justify-evenly w-full">
             <Link to="/">
               <li className="hover:text-gray-400">
                 <FontAwesomeIcon icon={faHome} />
               </li>
             </Link>
             <Link to="/events">
-              <li className="hover:text-gray-400">
-                OFF-ROAD EXPEDÍCIE a VÝJAZDY
-              </li>
+              <li className="hover:text-gray-400">All Events</li>
+            </Link>
+            <Link to="/country">
+              <li className="hover:text-gray-400">Events by country</li>
+            </Link>
+            <Link to="/my-events">
+              <li className="hover:text-gray-400">My Events</li>
             </Link>
             <Link to="/about">
-              <li className="hover:text-gray-400">HLAVNÉ MESTÁ a INÉ</li>
-            </Link>
-            <Link to="/about">
-              <li className="hover:text-gray-400">POZNÁVACIE CESTY</li>
+              <li className="hover:text-gray-400">About</li>
             </Link>
 
-            <Link to="/about">
-              <li className="hover:text-gray-500">EXOTICKÉ CESTY</li>
-            </Link>
-            <Link to="/about">
-              <li className="hover:text-gray-500">TRASY, TIPY a ITINERÁRE</li>
-            </Link>
             <Link to="/profile">
               {currentUser ? (
                 <img
@@ -78,23 +73,18 @@ export default function Header() {
               </li>
             </Link>
             <Link to="/events" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-400">
-                OFF-ROAD EXPEDÍCIE a VÝJAZDY
-              </li>
+              <li className="hover:text-gray-400">All Events</li>
+            </Link>
+            <Link to="/country" onClick={toggleMobileMenu}>
+              <li className="hover:text-gray-400">Events by country</li>
+            </Link>
+            <Link to="/my-events" onClick={toggleMobileMenu}>
+              <li className="hover:text-gray-400">My Events</li>
             </Link>
             <Link to="/about" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-400">HLAVNÉ MESTÁ a INÉ</li>
-            </Link>
-            <Link to="/about" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-400">POZNÁVACIE CESTY</li>
+              <li className="hover:text-gray-500">About</li>
             </Link>
 
-            <Link to="/about" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-500">EXOTICKÉ CESTY</li>
-            </Link>
-            <Link to="/about" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-500">TRASY, TIPY a ITINERÁRE</li>
-            </Link>
             <Link to="/profile" onClick={toggleMobileMenu}>
               {currentUser ? (
                 <img
