@@ -3,14 +3,21 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EditEvent from "../components/EditEvent";
 import DeleteEvent from "../components/DeleteEvent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCaravan,
   faCarSide,
   faTruckMonster,
+  faHeart,
+  faHeartBroken,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  addToWishList,
+  removeWishlist,
+  fetchWishlist,
+} from "../redux/wishlist/wishlistSlice";
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -23,6 +30,10 @@ const EventDetail = () => {
   });
 
   const currentUser = useSelector((state) => state.user.currentUser);
+  const wishlistsItems = useSelector(
+    (state) => state.wishlists.wishlistsItems || []
+  );
+  const dispatch = useDispatch();
 
   const fetchEvent = async () => {
     try {
@@ -37,7 +48,8 @@ const EventDetail = () => {
 
   useEffect(() => {
     fetchEvent();
-  }, [id]);
+    dispatch(fetchWishlist());
+  }, [id, dispatch]);
 
   useEffect(() => {
     console.log("Current User:", currentUser);
@@ -88,6 +100,25 @@ const EventDetail = () => {
     }
   };
 
+  const isWishlisted =
+    Array.isArray(wishlistsItems) &&
+    wishlistsItems.some((item) => item._id === event._id);
+
+  const handleWishlistToggle = () => {
+    if (isWishlisted) {
+      dispatch(removeWishlist(event));
+    } else {
+      dispatch(
+        addToWishList({
+          _id: event._id,
+          title: event.title,
+          image: event.image,
+          userID: currentUser,
+        })
+      );
+    }
+  };
+
   return (
     <main className="max-w-4xl mx-auto mt-5 p-4">
       <div className="flex flex-col gap-8">
@@ -124,6 +155,19 @@ const EventDetail = () => {
                       {event.user.currentUser.username}
                     </p>
                   )}
+                  <button
+                    onClick={handleWishlistToggle}
+                    className={`mt-4 p-2 rounded-lg ${
+                      isWishlisted ? "bg-red-600" : "bg-gray-600"
+                    } text-white`}
+                  >
+                    <FontAwesomeIcon
+                      icon={isWishlisted ? faHeartBroken : faHeart}
+                    />
+                    {isWishlisted
+                      ? " Remove from Wishlist"
+                      : " Add to Wishlist"}
+                  </button>
                   {isEventOwner && (
                     <div className="flex gap-4 mt-4">
                       <EditEvent event={event} onSubmitSuccess={fetchEvent} />

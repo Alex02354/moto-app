@@ -37,6 +37,54 @@ app.use(
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+// Wishlist Schema and Model
+const wishlistSchema = new mongoose.Schema({
+  _id: String,
+  image: String,
+  title: String,
+  userID: String,
+});
+
+const Wishlist = mongoose.model("Wishlist", wishlistSchema);
+
+// Wishlist Routes
+app.get("/api/wishlist", async (req, res, next) => {
+  try {
+    const items = await Wishlist.find();
+    res.json(items);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post("/api/wishlist", async (req, res, next) => {
+  try {
+    const newItem = new Wishlist(req.body);
+    await newItem.save();
+    res.json(newItem);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.delete("/api/wishlist/:id", async (req, res, next) => {
+  try {
+    await Wishlist.deleteOne({ _id: req.params.id });
+    res.json({ message: "Item deleted" });
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.delete("/api/wishlist", async (req, res, next) => {
+  try {
+    await Wishlist.deleteMany({});
+    res.json({ message: "Wishlist cleared" });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // API routes
 app.use("/api/events", eventRoutes);
 app.use("/api/user", userRoutes);

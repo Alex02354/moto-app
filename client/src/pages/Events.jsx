@@ -9,12 +9,17 @@ import {
   faCarSide,
   faTruckMonster,
 } from "@fortawesome/free-solid-svg-icons";
+import Wish from "../components/Wish";
 
 const Events = ({ country, currentUserId }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const currentUser = useSelector((state) => state.user.currentUser);
+
+  const { wishlistsItems } = useSelector((state) => state?.wishlists);
+
+  console.log(wishlistsItems);
 
   const fetchEvents = async () => {
     try {
@@ -78,6 +83,11 @@ const Events = ({ country, currentUserId }) => {
 
   return (
     <main className="max-w-7xl mx-auto mt-10">
+      <div className="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 items-center justify-center">
+        {wishlistsItems?.map((wishlist) => {
+          return <Wish key={wishlist?._id} wishlist={wishlist} />;
+        })}
+      </div>
       <div className="text-center my-5">
         {currentUser ? (
           <AddEvent onSubmitSuccess={fetchEvents} />
