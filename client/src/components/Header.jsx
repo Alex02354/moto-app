@@ -47,6 +47,9 @@ export default function Header() {
             <Link to="/my-events">
               <li className="hover:text-gray-400">My Events</li>
             </Link>
+            <Link to="/favourites">
+              <li className="hover:text-gray-400">Favourites</li>
+            </Link>
             <Link to="/about">
               <li className="hover:text-gray-400">About</li>
             </Link>
@@ -80,6 +83,9 @@ export default function Header() {
             </Link>
             <Link to="/my-events" onClick={toggleMobileMenu}>
               <li className="hover:text-gray-400">My Events</li>
+            </Link>
+            <Link to="/favourites" onClick={toggleMobileMenu}>
+              <li className="hover:text-gray-400">Favourites</li>
             </Link>
             <Link to="/about" onClick={toggleMobileMenu}>
               <li className="hover:text-gray-500">About</li>

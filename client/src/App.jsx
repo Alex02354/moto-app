@@ -12,6 +12,7 @@ import EventDetail from "./pages/EventDetail";
 import "./global.css";
 import MyEvents from "./pages/MyEvents";
 import Country from "./pages/Country";
+import Favourites from "./pages/Favourites";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/my-events" element={<MyEvents />} />
+        <Route path="/favourites" element={<Favourites />} />
         <Route path="/country" element={<Country />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />

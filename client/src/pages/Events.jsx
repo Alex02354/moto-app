@@ -9,7 +9,6 @@ import {
   faCarSide,
   faTruckMonster,
 } from "@fortawesome/free-solid-svg-icons";
-import Wish from "../components/Wish";
 
 const Events = ({ country, currentUserId }) => {
   const [events, setEvents] = useState([]);
@@ -83,11 +82,6 @@ const Events = ({ country, currentUserId }) => {
 
   return (
     <main className="max-w-7xl mx-auto mt-10">
-      <div className="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 items-center justify-center">
-        {wishlistsItems?.map((wishlist) => {
-          return <Wish key={wishlist?._id} wishlist={wishlist} />;
-        })}
-      </div>
       <div className="text-center my-5">
         {currentUser ? (
           <AddEvent onSubmitSuccess={fetchEvents} />

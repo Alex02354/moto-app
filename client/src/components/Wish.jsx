@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const Wish = ({ wishlist }) => {
-  const { _id, image, title } = wishlist;
+  const { _id, image, title, userID } = wishlist;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Wish = ({ wishlist }) => {
         <h3 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           {title}
         </h3>
-
+        <h1 className=" text-gray-900 dark:text-white">{userID}</h1>
         <div className="flex flex-row items-center py-1">
           <button
             onClick={() => removeWishlishHandler(wishlist)}
