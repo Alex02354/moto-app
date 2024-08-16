@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EditEvent from "../components/EditEvent";
 import DeleteEvent from "../components/DeleteEvent";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,11 +13,6 @@ import {
   faHeart,
   faHeartBroken,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  addToWishList,
-  removeWishlist,
-  fetchWishlist,
-} from "../redux/wishlist/wishlistSlice";
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -30,10 +25,7 @@ const EventDetail = () => {
   });
 
   const currentUser = useSelector((state) => state.user.currentUser);
-  const wishlistsItems = useSelector(
-    (state) => state.wishlists.wishlistsItems || []
-  );
-  const dispatch = useDispatch();
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const fetchEvent = async () => {
     try {
@@ -46,17 +38,43 @@ const EventDetail = () => {
     }
   };
 
-  useEffect(() => {
-    fetchEvent();
-    dispatch(fetchWishlist());
-  }, [id, dispatch]);
+  const checkWishlistStatus = async () => {
+    try {
+      const response = await axios.get(`/api/wishlist/${currentUser._id}`);
+      const wishlistItems = response.data;
+      setIsWishlisted(wishlistItems.some((item) => item.eventID === id));
+    } catch (err) {
+      console.error("Failed to check wishlist status:", err);
+    }
+  };
 
   useEffect(() => {
-    console.log("Current User:", currentUser);
-    if (event) {
-      console.log("Event User:", event.user);
+    fetchEvent();
+    if (currentUser) {
+      checkWishlistStatus();
     }
-  }, [currentUser, event]);
+  }, [id, currentUser]);
+
+  const handleWishlistToggle = async () => {
+    try {
+      if (isWishlisted) {
+        await axios.delete(`/api/wishlist/${id}/${currentUser._id}`);
+      } else {
+        await axios.post("/api/wishlist", {
+          eventID: id,
+          title: event.title,
+          image: event.image,
+          userID: currentUser._id,
+        });
+      }
+      setIsWishlisted(!isWishlisted);
+    } catch (err) {
+      console.error(
+        `Failed to ${isWishlisted ? "remove from" : "add to"} wishlist:`,
+        err
+      );
+    }
+  };
 
   if (loading)
     return (
@@ -72,10 +90,6 @@ const EventDetail = () => {
   const isEventOwner =
     currentUser && eventUserId && currentUser._id === eventUserId;
 
-  console.log("isEventOwner:", isEventOwner);
-  console.log("Current User ID:", currentUser?._id);
-  console.log("Event User ID:", eventUserId);
-
   const coordinates =
     event.coordinates && event.coordinates.length === 2
       ? {
@@ -89,7 +103,7 @@ const EventDetail = () => {
   };
 
   const renderAccessIcon = () => {
-    const iconSize = "lg"; // Adjust icon size as needed
+    const iconSize = "lg";
     switch (event.access) {
       case 0:
         return <FontAwesomeIcon icon={faCaravan} size={iconSize} />;
@@ -97,25 +111,6 @@ const EventDetail = () => {
         return <FontAwesomeIcon icon={faCarSide} size={iconSize} />;
       default:
         return <FontAwesomeIcon icon={faTruckMonster} size={iconSize} />;
-    }
-  };
-
-  const isWishlisted =
-    Array.isArray(wishlistsItems) &&
-    wishlistsItems.some((item) => item._id === event._id);
-
-  const handleWishlistToggle = () => {
-    if (isWishlisted) {
-      dispatch(removeWishlist(event));
-    } else {
-      dispatch(
-        addToWishList({
-          _id: event._id,
-          title: event.title,
-          image: event.image,
-          userID: currentUser,
-        })
-      );
     }
   };
 
@@ -145,9 +140,6 @@ const EventDetail = () => {
                   </p>
                   <p className="mb-2">
                     <strong>Country:</strong> {event.country}
-                  </p>
-                  <p className="mb-2">
-                    <strong>Section:</strong> {event.section}
                   </p>
                   {event.user && event.user.currentUser && (
                     <p>

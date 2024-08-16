@@ -123,9 +123,9 @@ const Events = ({ country, currentUserId }) => {
                     </p>
                   </div>
                   <div className="text-left mt-0">
-                    <p>
+                    {/*            <p>
                       <strong>Section:</strong> {event.section}
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </Link>

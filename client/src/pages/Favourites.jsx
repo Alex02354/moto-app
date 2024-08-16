@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 import { useSelector } from "react-redux";
 import Events from "./Events"; // Adjust the import path accordingly
 import Wish from "../components/Wish";
@@ -51,4 +51,4 @@ const Favourites = () => {
   );
 };
 
-export default Favourites;
+export default Favourites; */

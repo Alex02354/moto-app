@@ -15,10 +15,10 @@ dotenv.config();
 mongoose
   .connect(process.env.MONGO)
   .then(() => {
-    console.log("connected to MongoDB");
+    console.log("Connected to MongoDB");
   })
   .catch((err) => {
-    console.log(err);
+    console.log("Error connecting to MongoDB:", err);
   });
 
 const app = express();
@@ -26,10 +26,9 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Enable CORS for client route 5173
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend's URL
+    origin: "http://localhost:5173",
   })
 );
 
@@ -39,47 +38,54 @@ app.use(cookieParser());
 
 // Wishlist Schema and Model
 const wishlistSchema = new mongoose.Schema({
-  _id: String,
-  image: String,
-  title: String,
-  userID: String,
+  eventID: { type: String, required: true },
+  image: { type: String, required: true },
+  title: { type: String, required: true },
+  userID: { type: String, required: true },
 });
 
 const Wishlist = mongoose.model("Wishlist", wishlistSchema);
 
-// Wishlist Routes
-app.get("/api/wishlist", async (req, res, next) => {
-  try {
-    const items = await Wishlist.find();
-    res.json(items);
-  } catch (err) {
-    next(err);
-  }
-});
-
+// Add to Wishlist
 app.post("/api/wishlist", async (req, res, next) => {
   try {
+    const { eventID, userID } = req.body;
+    const existingItem = await Wishlist.findOne({ eventID, userID });
+
+    if (existingItem) {
+      return res.status(400).json({ message: "Item already in wishlist" });
+    }
+
     const newItem = new Wishlist(req.body);
     await newItem.save();
-    res.json(newItem);
+    res.status(201).json(newItem);
   } catch (err) {
     next(err);
   }
 });
 
-app.delete("/api/wishlist/:id", async (req, res, next) => {
+// Remove from Wishlist
+app.delete("/api/wishlist/:eventID/:userID", async (req, res, next) => {
   try {
-    await Wishlist.deleteOne({ _id: req.params.id });
-    res.json({ message: "Item deleted" });
+    const { eventID, userID } = req.params;
+    const deletedItem = await Wishlist.deleteOne({ eventID, userID });
+
+    if (deletedItem.deletedCount === 0) {
+      return res.status(404).json({ message: "Item not found in wishlist" });
+    }
+
+    res.json({ message: "Item removed from wishlist" });
   } catch (err) {
     next(err);
   }
 });
 
-app.delete("/api/wishlist", async (req, res, next) => {
+// Get Wishlist for Current User
+app.get("/api/wishlist/:userID", async (req, res, next) => {
   try {
-    await Wishlist.deleteMany({});
-    res.json({ message: "Wishlist cleared" });
+    const { userID } = req.params;
+    const wishlistItems = await Wishlist.find({ userID });
+    res.json(wishlistItems);
   } catch (err) {
     next(err);
   }
@@ -91,11 +97,11 @@ app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
 // Serve static files
-app.use(express.static(path.join(__dirname, "../dist"))); // Adjust path if needed
+app.use(express.static(path.join(__dirname, "../dist")));
 
 // Catch-all route to serve the front-end application
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist", "index.html")); // Adjust path if needed
+  res.sendFile(path.join(__dirname, "../dist", "index.html"));
 });
 
 // Error handling middleware
@@ -110,5 +116,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(3000, () => {
-  console.log("Server listening on port", 3000);
+  console.log("Server listening on port 3000");
 });
