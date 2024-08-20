@@ -112,8 +112,8 @@ const Events = ({ country, currentUserId }) => {
                   </h2>
                   <div className="text-left mt-0">
                     <p>
-                      {event.description}
-                      {" --- "}
+                      {/*              {event.description}
+                      {" --- "} */}
                       {new Date(event.date).toLocaleDateString()}
                     </p>
                   </div>

@@ -12,6 +12,7 @@ import {
   faTruckMonster,
   faHeart,
   faHeartBroken,
+  faMap,
 } from "@fortawesome/free-solid-svg-icons";
 
 const EventDetail = () => {
@@ -183,11 +184,17 @@ const EventDetail = () => {
                 </div>
               )}
             </div>
-            <img
-              src={event.map}
-              alt="Map"
-              className="w-full h-auto object-cover rounded-lg shadow-lg"
-            />
+            {event.map && (
+              <a
+                href={event.map}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold text-center py-3 px-4 rounded-lg"
+              >
+                <FontAwesomeIcon icon={faMap} style={{ marginRight: 10 }} />
+                Map Link
+              </a>
+            )}
           </div>
         </div>
       </div>

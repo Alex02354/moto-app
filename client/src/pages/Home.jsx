@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <main className="max-w-10xl mx-auto mt-10">
       <div className="max-w-7xl items-center mx-auto">
-        <div className="px-4 my-5 flex flex-col md:flex-row items-center md:items-start">
+        {/* <div className="px-4 my-5 flex flex-col md:flex-row items-center md:items-start">
           <div className="md:w-2/3 mb-4 md:mb-0">
             <p className="mb-4 text-justify font-bold">
               Cestovanie a spoznávanie je skutočným bohatstvom, ktorého základom
@@ -159,7 +159,7 @@ export default function Home() {
         </div>
         <h1 className="px-4 text-3xl font-bold  text-left">
           ČASOVÁ OS CIEST a EXPEDÍCIÍ
-        </h1>
+        </h1> */}
         <Events />
         <h1 className="p-4 text-3xl font-bold  text-left">PLÁN JE JASNÝ ...</h1>
         <img

@@ -47,8 +47,8 @@ export default function Header() {
             <Link to="/my-events">
               <li className="hover:text-gray-400">My Events</li>
             </Link>
-            <Link to="/favourites">
-              <li className="hover:text-gray-400">Favourites</li>
+            <Link to="/wishlist">
+              <li className="hover:text-gray-400">Wishlist</li>
             </Link>
             <Link to="/about">
               <li className="hover:text-gray-400">About</li>

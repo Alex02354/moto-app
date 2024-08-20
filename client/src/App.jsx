@@ -12,12 +12,11 @@ import EventDetail from "./pages/EventDetail";
 import "./global.css";
 import MyEvents from "./pages/MyEvents";
 import Country from "./pages/Country";
-//import Favourites from "./pages/Favourites";
+import Wishlist from "./pages/Wishlist";
 
 export default function App() {
   return (
     <BrowserRouter>
-      {/* Header */}
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -27,14 +26,12 @@ export default function App() {
         <Route path="/events" element={<Events />} />
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/my-events" element={<MyEvents />} />
-        <Route path="/wishlist" element={<MyEvents />} />
-        {/* <Route path="/favourites" element={<Favourites />} /> */}
+        <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/country" element={<Country />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
-      {/* Footer */}
       <Footer />
     </BrowserRouter>
   );

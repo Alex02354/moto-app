@@ -10,6 +10,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase"; // Adjust the path as necessary
+import addEventImage from "../assets/images/ADD.png";
 
 const AddEvent = ({ onSubmitSuccess }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -147,12 +148,15 @@ const AddEvent = ({ onSubmitSuccess }) => {
 
   return (
     <>
-      <button
-        onClick={() => setModalOpen(true)}
-        className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 my-2 px-4 rounded-lg"
-      >
-        Add New Event
-      </button>
+      <div className="flex justify-center items-center">
+        <img
+          src={addEventImage}
+          alt="Add New Event"
+          onClick={() => setModalOpen(true)}
+          className="cursor-pointer w-64 h-auto my-2 px-4 py-3"
+          // Add custom styles as needed
+        />
+      </div>
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
           <h3 className="text-xl font-bold mb-4">Add New Event</h3>
