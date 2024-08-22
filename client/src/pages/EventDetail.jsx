@@ -66,6 +66,11 @@ const EventDetail = () => {
           title: event.title,
           image: event.image,
           userID: currentUser._id,
+          section: {
+            main: event.section.main,
+            sub: event.section.sub,
+          },
+          country: event.country,
         });
       }
       setIsWishlisted(!isWishlisted);
