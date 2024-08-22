@@ -42,6 +42,8 @@ const wishlistSchema = new mongoose.Schema({
   image: { type: String, required: true },
   title: { type: String, required: true },
   userID: { type: String, required: true },
+  country: { type: String, required: true },
+  section: { type: String, required: true },
 });
 
 const Wishlist = mongoose.model("Wishlist", wishlistSchema);
