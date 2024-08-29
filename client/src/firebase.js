@@ -6,11 +6,11 @@ import { initializeApp } from "firebase/app";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: "moto-app-f2fc8.firebaseapp.com",
-  projectId: "moto-app-f2fc8",
-  storageBucket: "moto-app-f2fc8.appspot.com",
-  messagingSenderId: "557304146214",
-  appId: "1:557304146214:web:702521850d7817911c39e7",
+  authDomain: "my-app-fbb56.firebaseapp.com",
+  projectId: "my-app-fbb56",
+  storageBucket: "my-app-fbb56.appspot.com",
+  messagingSenderId: "346640543321",
+  appId: "1:346640543321:web:9c694c3a0fc7c5b78a8b48",
 };
 
 // Initialize Firebase
