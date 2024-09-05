@@ -22,21 +22,16 @@ const AddEvent = ({ onSubmitSuccess }) => {
     coordinates: "",
     access: "",
     date: "",
-    section: "",
+    section: { main: "", sub: "" },
     country: "", // Add country to the state
   });
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageUploadError, setImageUploadError] = useState(false);
-  const [mapUploadError, setMapUploadError] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
-  const [uploadingMap, setUploadingMap] = useState(false);
   const [imagePercent, setImagePercent] = useState(0);
-  const [mapPercent, setMapPercent] = useState(0);
   const [imageUploaded, setImageUploaded] = useState(false);
-  const [mapUploaded, setMapUploaded] = useState(false);
   const imageFileRef = useRef(null);
-  const mapFileRef = useRef(null);
 
   const user = useSelector((state) => state.user); // Replace with the actual path to the user in your Redux state
 
@@ -45,11 +40,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      if (type === "image") {
-        setImageUploadError("File size must be less than 2 MB");
-      } else {
-        setMapUploadError("File size must be less than 2 MB");
-      }
+      setImageUploadError("File size must be less than 2 MB");
       return;
     }
 
@@ -58,52 +49,34 @@ const AddEvent = ({ onSubmitSuccess }) => {
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
-    if (type === "image") setUploadingImage(true);
-    else setUploadingMap(true);
+    setUploadingImage(true);
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        if (type === "image") setImagePercent(Math.round(progress));
-        else setMapPercent(Math.round(progress));
+        setImagePercent(Math.round(progress));
       },
       (error) => {
-        if (type === "image") {
-          setImageUploadError(true);
-          setUploadingImage(false);
-        } else {
-          setMapUploadError(true);
-          setUploadingMap(false);
-        }
+        setImageUploadError(true);
+        setUploadingImage(false);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          if (type === "image") {
-            setEventData((prevEventData) => ({
-              ...prevEventData,
-              image: downloadURL,
-            }));
-            setUploadingImage(false);
-            setImageUploadError(false);
-            setImageUploaded(true);
-          } else {
-            setEventData((prevEventData) => ({
-              ...prevEventData,
-              map: downloadURL,
-            }));
-            setUploadingMap(false);
-            setMapUploadError(false);
-            setMapUploaded(true);
-          }
+          setEventData((prevEventData) => ({
+            ...prevEventData,
+            image: downloadURL,
+          }));
+          setUploadingImage(false);
+          setImageUploadError(false);
+          setImageUploaded(true);
         });
       }
     );
   }, []);
 
   const handleImageUpload = () => handleFileUpload(imageFileRef, "image");
-  const handleMapUpload = () => handleFileUpload(mapFileRef, "map");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -112,8 +85,8 @@ const AddEvent = ({ onSubmitSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!imageUploaded || !mapUploaded) {
-      setError("Please upload the image and the map first.");
+    if (!imageUploaded) {
+      setError("Please upload the image first.");
       return;
     }
     setIsSubmitting(true);
@@ -133,17 +106,45 @@ const AddEvent = ({ onSubmitSuccess }) => {
         coordinates: "",
         access: "",
         date: "",
-        section: "",
-        country: "", // Reset country field
-      }); // Clear form data
+        section: { main: "camp", sub: "natural" },
+        country: "",
+      });
       setImageUploaded(false); // Reset image upload status
-      setMapUploaded(false); // Reset map upload status
       onSubmitSuccess();
     } catch (err) {
       setError(err.message);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Coordinates regex validation
+  const validateCoordinates = (input) => {
+    const regex = /^\d{2}\.\d{0,6},\s?\d{2}\.\d{0,6}$/;
+    return regex.test(input);
+  };
+
+  const handleBlur = () => {
+    if (!validateCoordinates(eventData.coordinates)) {
+      setError("Invalid coordinates format. Use XX.XXXXXX, YY.YYYYYY.");
+    } else {
+      setError(null);
+    }
+  };
+
+  // Section main and sub logic
+  const handleSectionChange = (mainSection) => {
+    setEventData((prevData) => ({
+      ...prevData,
+      section: { ...prevData.section, main: mainSection, sub: "" },
+    }));
+  };
+
+  const handleSubSectionChange = (subSection) => {
+    setEventData((prevData) => ({
+      ...prevData,
+      section: { ...prevData.section, sub: subSection },
+    }));
   };
 
   return (
@@ -210,31 +211,15 @@ const AddEvent = ({ onSubmitSuccess }) => {
             )}
           </div>
           <div className="form-control">
-            <label className="label">Map</label>
+            <label className="label">MAP/ITINERARY URL</label>
             <input
-              type="file"
-              ref={mapFileRef}
-              accept="image/*"
+              type="text"
+              name="map"
+              value={eventData.map}
+              onChange={handleChange}
               className="input input-bordered"
               required
             />
-            <button
-              type="button"
-              className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 my-2 px-4 rounded-lg"
-              onClick={handleMapUpload}
-              disabled={uploadingMap}
-            >
-              {uploadingMap ? "Uploading..." : "Upload Map"}
-            </button>
-            {uploadingMap && <div>{`Uploading: ${mapPercent}%`}</div>}
-            {mapUploadError && (
-              <div className="text-red-500">
-                Error uploading map: {mapUploadError}
-              </div>
-            )}
-            {mapUploaded && (
-              <div className="text-green-700">Map uploaded successfully</div>
-            )}
           </div>
           <div className="form-control">
             <label className="label">Coordinates (comma-separated)</label>
@@ -242,7 +227,11 @@ const AddEvent = ({ onSubmitSuccess }) => {
               type="text"
               name="coordinates"
               value={eventData.coordinates}
-              onChange={handleChange}
+              onBlur={handleBlur}
+              onChange={(e) =>
+                setEventData({ ...eventData, coordinates: e.target.value })
+              }
+              placeholder="Coordinates"
               className="input input-bordered"
               required
             />
@@ -274,20 +263,73 @@ const AddEvent = ({ onSubmitSuccess }) => {
             />
           </div>
           <div className="form-control">
-            <label className="label">Section</label>
+            <label className="label">Main Section</label>
             <select
-              name="section"
-              value={eventData.section}
-              onChange={handleChange}
+              name="sectionMain"
+              value={eventData.section.main}
+              onChange={(e) => handleSectionChange(e.target.value)}
               className="select select-bordered"
               required
             >
-              <option value="">Select a section</option>
-              <option value="kemp">Kemp</option>
-              <option value="places">Places</option>
+              <option value="">Select a main section</option>
+              <option value="camp">Camp</option>
+              <option value="route">Route</option>
               <option value="itinerary">Itinerary</option>
+              <option value="places">Places</option>
             </select>
           </div>
+          {/* Conditionally render the sub-section select based on the main section */}
+          {eventData.section.main === "camp" && (
+            <div className="form-control">
+              <label className="label">Camp Sub-section</label>
+              <select
+                name="sectionSub"
+                value={eventData.section.sub}
+                onChange={(e) => handleSubSectionChange(e.target.value)}
+                className="select select-bordered"
+                required
+              >
+                <option value="">Select a sub-section</option>
+                <option value="natural">Natural</option>
+                <option value="created">Created</option>
+              </select>
+            </div>
+          )}
+
+          {eventData.section.main === "route" && (
+            <div className="form-control">
+              <label className="label">Route Sub-section</label>
+              <select
+                name="sectionSub"
+                value={eventData.section.sub}
+                onChange={(e) => handleSubSectionChange(e.target.value)}
+                className="select select-bordered"
+                required
+              >
+                <option value="">Select a sub-section</option>
+                <option value="offroad">Offroad</option>
+                <option value="caravan/car">Caravan/Car</option>
+              </select>
+            </div>
+          )}
+
+          {eventData.section.main === "places" && (
+            <div className="form-control">
+              <label className="label">Places Sub-section</label>
+              <select
+                name="sectionSub"
+                value={eventData.section.sub}
+                onChange={(e) => handleSubSectionChange(e.target.value)}
+                className="select select-bordered"
+                required
+              >
+                <option value="">Select a sub-section</option>
+                <option value="nature">Nature</option>
+                <option value="built">Built</option>
+                <option value="views">Views</option>
+              </select>
+            </div>
+          )}
           <div className="form-control">
             <label className="label">Country</label>
             <select
@@ -298,16 +340,44 @@ const AddEvent = ({ onSubmitSuccess }) => {
               required
             >
               <option value="">Select a country</option>
-              <option value="Slovakia">Slovakia</option>
-              <option value="Italy">Italy</option>
+              <option value="Albania">Albania</option>
+              <option value="Austria">Austria</option>
+              <option value="Belgium">Belgium</option>
+              <option value="Bosnia_Herzegovina">Bosnia_Herzegovina</option>
+              <option value="Bulgaria">Bulgaria</option>
+              <option value="Croatia">Croatia</option>
+              <option value="Cyprus">Cyprus</option>
+              <option value="Czechia">Czechia</option>
+              <option value="Denmark">Denmark</option>
+              <option value="Estonia">Estonia</option>
+              <option value="Finland">Finland</option>
               <option value="France">France</option>
-              <option value="Czech Republic">Czech Republic</option>
+              <option value="Germany">Germany</option>
+              <option value="Greece">Greece</option>
+              <option value="Hungary">Hungary</option>
+              <option value="Ireland">Ireland</option>
+              <option value="Italy">Italy</option>
+              <option value="Kosovo">Kosovo</option>
+              <option value="Latvia">Latvia</option>
+              <option value="Lithuania">Lithuania</option>
+              <option value="Luxembourg">Luxembourg</option>
+              <option value="Montenegro">Montenegro</option>
+              <option value="Netherlands">Netherlands</option>
+              <option value="North Macedonia">North Macedonia</option>
+              <option value="Poland">Poland</option>
+              <option value="Portugal">Portugal</option>
+              <option value="Romania">Romania</option>
+              <option value="Serbia">Serbia</option>
+              <option value="Slovakia">Slovakia</option>
+              <option value="Slovenia">Slovenia</option>
+              <option value="Spain">Spain</option>
+              <option value="Sweden">Sweden</option>
             </select>
           </div>
           <button
             type="submit"
             className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 my-2 px-4 rounded-lg"
-            disabled={isSubmitting || uploadingImage || uploadingMap}
+            disabled={isSubmitting}
           >
             {isSubmitting ? "Loading..." : "Submit"}
           </button>

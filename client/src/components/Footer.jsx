@@ -37,7 +37,7 @@ export default function Footer() {
       </div>
       <hr className="border-slate-400 my-5 max-w-7xl mx-auto px-4" />
       <div className="text-center py-4 text-white">
-        © 2024 Bravio.sk All rights reserved.
+        © 2024 www.bravio.sk All rights reserved.
       </div>
     </footer>
   );
