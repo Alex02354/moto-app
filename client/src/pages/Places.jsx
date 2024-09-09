@@ -1,5 +1,5 @@
 import React from "react";
-import Events from "./Events"; // Adjust the import path accordingly
+import Events from "./Events";
 import { useNavigate } from "react-router-dom";
 import places from "../assets/images/places.png";
 import nature from "../assets/images/places - natural.png";
