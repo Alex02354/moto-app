@@ -44,6 +44,10 @@ const Wishlist = () => {
         />
         <div className="p-4">
           <h3 className="text-lg font-semibold">{item.title}</h3>
+          <p className="text-sm">
+            Section: {item.section.main} - {item.section.sub}
+          </p>
+          <p className="text-sm">Country: {item.country}</p>
         </div>
       </div>
     </Link>

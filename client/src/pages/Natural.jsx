@@ -17,7 +17,12 @@ const Natural = ({ section, subsection }) => {
         />
       </div>
       <div className="text-center my-5">
-        <Events section={section} subsection={subsection} hideAddEvent={true} />
+        <Events
+          section={section}
+          subsection={subsection}
+          hideAddEvent={true}
+          hideFilterButtons={true}
+        />
       </div>
     </main>
   );

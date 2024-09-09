@@ -38,10 +38,6 @@ export default function Header() {
                 <FontAwesomeIcon icon={faHome} />
               </li>
             </Link>
-
-            <Link to="/country">
-              <li className="hover:text-gray-400">Events by country</li>
-            </Link>
             <Link to="/my-events">
               <li className="hover:text-gray-400">My Events</li>
             </Link>
@@ -72,10 +68,6 @@ export default function Header() {
               <li className="hover:text-gray-400">
                 <FontAwesomeIcon icon={faHome} />
               </li>
-            </Link>
-
-            <Link to="/country" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-400">Events by country</li>
             </Link>
             <Link to="/my-events" onClick={toggleMobileMenu}>
               <li className="hover:text-gray-400">My Events</li>

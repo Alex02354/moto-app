@@ -10,33 +10,41 @@ const Routes2 = ({ section, subsection }) => {
 
   return (
     <main className="max-w-7xl mx-auto mt-10">
-      <div className="flex flex-row items-center justify-center">
+      {/* Routes Image */}
+      <div className="flex flex-col items-center justify-center">
         <img
           src={routes}
           alt="Routes"
-          className="w-64 h-auto my-2 px-4 py-3"
-          // Add custom styles as needed
+          className="w-full max-w-xs sm:max-w-xs md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
         />
+        {/* Divider */}
+        <hr className="border-black border-t-2 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl my-4" />
       </div>
-      <div className="flex flex-row items-center justify-center">
+
+      {/* Sub-Category Images */}
+      <div className="flex flex-col sm:flex-row items-center justify-center flex-wrap">
         <img
           src={caravan}
           alt="Caravan"
           onClick={() => navigate("/events/route/caravan")}
-          className="cursor-pointer w-64 h-auto my-2 px-4 py-3"
-          // Add custom styles as needed
+          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl h-auto my-2 px-4 py-3"
         />
-
         <img
           src={offroad}
-          alt="offroad"
+          alt="Offroad"
           onClick={() => navigate("/events/route/offroad")}
-          className="cursor-pointer w-64 h-auto my-2 px-4 py-3"
-          // Add custom styles as needed
+          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-md lg:max-w-lg h-auto my-2 px-4 py-3"
         />
       </div>
+
+      {/* Events Section */}
       <div className="text-center my-5">
-        <Events section={section} subsection={subsection} hideAddEvent={true} />
+        <Events
+          section={section}
+          subsection={subsection}
+          hideAddEvent={true}
+          hideFilterButtons={true}
+        />
       </div>
     </main>
   );

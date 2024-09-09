@@ -11,7 +11,6 @@ import Section from "./pages/Section";
 import EventDetail from "./pages/EventDetail";
 import "./global.css";
 import MyEvents from "./pages/MyEvents";
-import Country from "./pages/Country";
 import Wishlist from "./pages/Wishlist";
 import Places from "./pages/Places";
 import Routes2 from "./pages/Routes2";
@@ -49,7 +48,7 @@ export default function App() {
         />
         <Route
           path="/events/route/caravan"
-          element={<Caravan section="route" subsection="caravan" />}
+          element={<Caravan section="route" subsection="caravan/car" />}
         />
         <Route
           path="/events/places/nature"
@@ -66,7 +65,7 @@ export default function App() {
         <Route
           path="/events/route"
           element={
-            <Routes2 section="route" subsection={["offroad", "caravan"]} />
+            <Routes2 section="route" subsection={["offroad", "caravan/car"]} />
           }
         />
         <Route
@@ -95,7 +94,6 @@ export default function App() {
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/my-events" element={<MyEvents />} />
         <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/country" element={<Country />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>

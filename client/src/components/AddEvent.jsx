@@ -153,126 +153,26 @@ const AddEvent = ({ onSubmitSuccess }) => {
 
   return (
     <>
-      <div className="flex justify-center items-center">
+      <div className="flex flex-col sm:flex-row justify-center items-center flex-wrap">
         <img
           src={discoverImage}
           alt="Add New Event"
           onClick={() => navigate("/events/section")}
-          className="cursor-pointer w-64 h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-lg h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
         <img
           src={addEventImage}
           alt="Add New Event"
           onClick={() => setModalOpen(true)}
-          className="cursor-pointer w-64 h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
       </div>
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
           <h3 className="text-xl font-bold mb-4">Add New Event</h3>
-          {error && <div className="text-red-500">{error}</div>}
-          <div className="form-control">
-            <label className="label">Title</label>
-            <input
-              type="text"
-              name="title"
-              value={eventData.title}
-              onChange={handleChange}
-              className="input input-bordered"
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">Description</label>
-            <textarea
-              name="description"
-              value={eventData.description}
-              onChange={handleChange}
-              className="textarea textarea-bordered"
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">Image</label>
-            <input
-              type="file"
-              ref={imageFileRef}
-              accept="image/*"
-              className="input input-bordered"
-              required
-            />
-            <button
-              type="button"
-              className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 my-2 px-4 rounded-lg"
-              onClick={handleImageUpload}
-              disabled={uploadingImage}
-            >
-              {uploadingImage ? "Uploading..." : "Upload Image"}
-            </button>
-            {uploadingImage && <div>{`Uploading: ${imagePercent}%`}</div>}
-            {imageUploadError && (
-              <div className="text-red-500">
-                Error uploading image: {imageUploadError}
-              </div>
-            )}
-            {imageUploaded && (
-              <div className="text-green-700">Image uploaded successfully</div>
-            )}
-          </div>
-          <div className="form-control">
-            <label className="label">MAP/ITINERARY URL</label>
-            <input
-              type="text"
-              name="map"
-              value={eventData.map}
-              onChange={handleChange}
-              className="input input-bordered"
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">Coordinates (comma-separated)</label>
-            <input
-              type="text"
-              name="coordinates"
-              value={eventData.coordinates}
-              onBlur={handleBlur}
-              onChange={(e) =>
-                setEventData({ ...eventData, coordinates: e.target.value })
-              }
-              placeholder="Coordinates"
-              className="input input-bordered"
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label className="label">Access Level</label>
-            <select
-              name="access"
-              value={eventData.access}
-              onChange={handleChange}
-              className="select select-bordered"
-              required
-            >
-              <option value="">Select an access</option>
-              <option value={0}>Caravan</option>
-              <option value={1}>Car</option>
-              <option value={2}>Offroad</option>
-            </select>
-          </div>
-          <div className="form-control">
-            <label className="label">Date</label>
-            <input
-              type="date" // Change input type to "date" to restrict time selection
-              name="date"
-              value={eventData.date}
-              onChange={handleChange}
-              className="input input-bordered"
-              required
-            />
-          </div>
+
           <div className="form-control">
             <label className="label">Main Section</label>
             <select
@@ -385,6 +285,114 @@ const AddEvent = ({ onSubmitSuccess }) => {
               <option value="Sweden">Sweden</option>
             </select>
           </div>
+          <div className="form-control">
+            <label className="label">Title</label>
+            <input
+              type="text"
+              name="title"
+              value={eventData.title}
+              onChange={handleChange}
+              className="input input-bordered"
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="label">Description</label>
+            <textarea
+              name="description"
+              value={eventData.description}
+              onChange={handleChange}
+              className="textarea textarea-bordered"
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="label">Image</label>
+            <input
+              type="file"
+              ref={imageFileRef}
+              accept="image/*"
+              className="input input-bordered"
+              required
+            />
+            <button
+              type="button"
+              className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 my-2 px-4 rounded-lg"
+              onClick={handleImageUpload}
+              disabled={uploadingImage}
+            >
+              {uploadingImage ? "Uploading..." : "Upload Image"}
+            </button>
+            {uploadingImage && <div>{`Uploading: ${imagePercent}%`}</div>}
+            {imageUploadError && (
+              <div className="text-red-500">
+                Error uploading image: {imageUploadError}
+              </div>
+            )}
+            {imageUploaded && (
+              <div className="text-green-700">Image uploaded successfully</div>
+            )}
+          </div>
+          <div className="form-control">
+            <label className="label">MAP/ITINERARY URL</label>
+            <input
+              type="text"
+              name="map"
+              value={eventData.map}
+              onChange={handleChange}
+              className="input input-bordered"
+              required
+            />
+          </div>
+          <div className="form-control">
+            <label className="label">Coordinates (comma-separated)</label>
+            <input
+              type="text"
+              name="coordinates"
+              value={eventData.coordinates}
+              onBlur={handleBlur}
+              onChange={(e) =>
+                setEventData({ ...eventData, coordinates: e.target.value })
+              }
+              placeholder="Coordinates"
+              className="input input-bordered"
+              required
+              // Disable the coordinates field if section.main is 'route' or 'itinerary'
+              disabled={
+                eventData.section.main === "route" ||
+                eventData.section.main === "itinerary"
+              }
+            />
+          </div>
+
+          {error && <div className="text-red-500">{error}</div>}
+          <div className="form-control">
+            <label className="label">Access Level</label>
+            <select
+              name="access"
+              value={eventData.access}
+              onChange={handleChange}
+              className="select select-bordered"
+              required
+            >
+              <option value="">Select an access</option>
+              <option value={0}>Caravan</option>
+              <option value={1}>Car</option>
+              <option value={2}>Offroad</option>
+            </select>
+          </div>
+          <div className="form-control">
+            <label className="label">Date</label>
+            <input
+              type="date" // Change input type to "date" to restrict time selection
+              name="date"
+              value={eventData.date}
+              onChange={handleChange}
+              className="input input-bordered"
+              required
+            />
+          </div>
+
           <button
             type="submit"
             className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 my-2 px-4 rounded-lg"

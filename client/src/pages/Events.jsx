@@ -9,6 +9,7 @@ import {
   faCarSide,
   faTruckMonster,
 } from "@fortawesome/free-solid-svg-icons";
+import countries from "../data/countries"; // Import the list of countries
 
 const Events = ({
   country,
@@ -16,10 +17,15 @@ const Events = ({
   section,
   subsection,
   hideAddEvent,
+  hideFilterButtons,
 }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [selectedSection, setSelectedSection] = useState("ALL"); // State for section buttons
+  const [selectedCountry, setSelectedCountry] = useState("ALL"); // State for country dropdown
+
   const currentUser = useSelector((state) => state.user.currentUser);
 
   const { wishlistsItems } = useSelector((state) => state?.wishlists);
@@ -31,22 +37,19 @@ const Events = ({
       const response = await axios.get("/api/events");
       let fetchedEvents = response.data.data;
 
+      // Original filtering logic by currentUserId, section, and subsection
       if (currentUserId) {
-        // Assuming each event has a 'user' object with an '_id' property
         fetchedEvents = fetchedEvents.filter(
           (event) => event.user && event.user.currentUser._id === currentUserId
         );
         console.log("Filtered Events by currentUserId:", fetchedEvents);
       }
 
-      // Filter events by country
-      // Filter events by section (supporting an array of sections)
       if (section && Array.isArray(section)) {
         fetchedEvents = fetchedEvents.filter((event) =>
           section.includes(event.section.main)
         );
       } else if (section) {
-        // For single section
         fetchedEvents = fetchedEvents.filter(
           (event) => event.section.main === section
         );
@@ -57,9 +60,22 @@ const Events = ({
           subsection.includes(event.section.sub)
         );
       } else if (subsection) {
-        // For single subsection
         fetchedEvents = fetchedEvents.filter(
           (event) => event.section.sub === subsection
+        );
+      }
+
+      // Additional filtering based on the section buttons
+      if (selectedSection !== "ALL") {
+        fetchedEvents = fetchedEvents.filter(
+          (event) => event.section.main === selectedSection.toLowerCase()
+        );
+      }
+
+      // Additional filtering based on the country dropdown
+      if (selectedCountry !== "ALL") {
+        fetchedEvents = fetchedEvents.filter(
+          (event) => event.country === selectedCountry
         );
       }
 
@@ -75,7 +91,14 @@ const Events = ({
 
   useEffect(() => {
     fetchEvents();
-  }, [currentUserId, country, section, subsection]);
+  }, [
+    currentUserId,
+    country,
+    section,
+    subsection,
+    selectedSection,
+    selectedCountry,
+  ]);
 
   if (loading) {
     return (
@@ -110,6 +133,79 @@ const Events = ({
         )}
         {!currentUser && <p>You must be signed in to add an event.</p>}
 
+        {/* Conditionally render Section Filtering Buttons */}
+        {!hideFilterButtons && (
+          <div className="my-4 flex flex-wrap justify-center">
+            <button
+              onClick={() => setSelectedSection("ALL")}
+              className={`btn mx-2 my-1 px-4 py-2 text-sm md:text-base font-bold transition duration-300 ${
+                selectedSection === "ALL"
+                  ? "bg-black text-yellow-400 hover:bg-black"
+                  : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
+              }`}
+            >
+              ALL
+            </button>
+            <button
+              onClick={() => setSelectedSection("route")}
+              className={`btn mx-2 my-1 px-4 py-2 text-sm md:text-base font-bold transition duration-300 ${
+                selectedSection === "route"
+                  ? "bg-black text-yellow-400 hover:bg-black"
+                  : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
+              }`}
+            >
+              ROUTES
+            </button>
+            <button
+              onClick={() => setSelectedSection("camp")}
+              className={`btn mx-2 my-1 px-4 py-2 text-sm md:text-base font-bold transition duration-300 ${
+                selectedSection === "camp"
+                  ? "bg-black text-yellow-400 hover:bg-black"
+                  : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
+              }`}
+            >
+              CAMPS
+            </button>
+            <button
+              onClick={() => setSelectedSection("places")}
+              className={`btn mx-2 my-1 px-4 py-2 text-sm md:text-base font-bold transition duration-300 ${
+                selectedSection === "places"
+                  ? "bg-black text-yellow-400 hover:bg-black"
+                  : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
+              }`}
+            >
+              PLACES
+            </button>
+            <button
+              onClick={() => setSelectedSection("itinerary")}
+              className={`btn mx-2 my-1 px-4 py-2 text-sm md:text-base font-bold transition duration-300 ${
+                selectedSection === "itinerary"
+                  ? "bg-black text-yellow-400 hover:bg-black"
+                  : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
+              }`}
+            >
+              ITINERARY
+            </button>
+          </div>
+        )}
+
+        {/* Country Filtering Dropdown */}
+        <div className="my-4">
+          <select
+            value={selectedCountry}
+            onChange={(e) => setSelectedCountry(e.target.value)}
+            className="p-2 border rounded"
+          >
+            <option value="ALL">All Countries</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Event Listing */}
         <div className="flex flex-wrap gap-4 mt-8 justify-center">
           {events && events.length > 0 ? (
             events.map((event) => (
@@ -140,10 +236,8 @@ const Events = ({
                       <strong>Country:</strong> {event.country}
                     </p>
                     <p>
-                      <strong>Section:</strong> {event.section.main}
-                    </p>
-                    <p>
-                      <strong>Subsection:</strong> {event.section.sub}
+                      <strong>Section:</strong> {event.section.main}{" "}
+                      {event.section.sub}
                     </p>
                   </div>
                 </div>
