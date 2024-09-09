@@ -30,7 +30,7 @@ const MyEvents = () => {
     <main className="max-w-7xl mx-auto mt-10">
       <div className="text-center my-5">
         {currentUser ? (
-          <Events currentUserId={currentUser._id} />
+          <Events currentUserId={currentUser._id} hideAddEvent={true} />
         ) : (
           <p>You must be signed in to view your events.</p>
         )}

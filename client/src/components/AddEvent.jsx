@@ -11,6 +11,8 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase"; // Adjust the path as necessary
 import addEventImage from "../assets/images/ADD.png";
+import discoverImage from "../assets/images/discover.png";
+import { useNavigate } from "react-router-dom";
 
 const AddEvent = ({ onSubmitSuccess }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -34,6 +36,8 @@ const AddEvent = ({ onSubmitSuccess }) => {
   const imageFileRef = useRef(null);
 
   const user = useSelector((state) => state.user); // Replace with the actual path to the user in your Redux state
+
+  const navigate = useNavigate();
 
   const handleFileUpload = useCallback(async (fileRef, type) => {
     const file = fileRef.current.files[0];
@@ -150,6 +154,13 @@ const AddEvent = ({ onSubmitSuccess }) => {
   return (
     <>
       <div className="flex justify-center items-center">
+        <img
+          src={discoverImage}
+          alt="Add New Event"
+          onClick={() => navigate("/events/section")}
+          className="cursor-pointer w-64 h-auto my-2 px-4 py-3"
+          // Add custom styles as needed
+        />
         <img
           src={addEventImage}
           alt="Add New Event"

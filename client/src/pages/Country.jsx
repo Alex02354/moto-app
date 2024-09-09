@@ -27,7 +27,7 @@ const Country = () => {
           <option value="France">France</option>
         </select>
       </div>
-      <Events country={selectedCountry} />
+      <Events country={selectedCountry} hideAddEvent={true} />
     </main>
   );
 };

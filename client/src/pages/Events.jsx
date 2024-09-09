@@ -10,7 +10,13 @@ import {
   faTruckMonster,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Events = ({ country, currentUserId }) => {
+const Events = ({
+  country,
+  currentUserId,
+  section,
+  subsection,
+  hideAddEvent,
+}) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,8 +31,6 @@ const Events = ({ country, currentUserId }) => {
       const response = await axios.get("/api/events");
       let fetchedEvents = response.data.data;
 
-      console.log("Fetched Events:", fetchedEvents);
-
       if (currentUserId) {
         // Assuming each event has a 'user' object with an '_id' property
         fetchedEvents = fetchedEvents.filter(
@@ -35,11 +39,28 @@ const Events = ({ country, currentUserId }) => {
         console.log("Filtered Events by currentUserId:", fetchedEvents);
       }
 
-      if (country) {
-        fetchedEvents = fetchedEvents.filter(
-          (event) => event.country === country
+      // Filter events by country
+      // Filter events by section (supporting an array of sections)
+      if (section && Array.isArray(section)) {
+        fetchedEvents = fetchedEvents.filter((event) =>
+          section.includes(event.section.main)
         );
-        console.log("Filtered Events by country:", fetchedEvents);
+      } else if (section) {
+        // For single section
+        fetchedEvents = fetchedEvents.filter(
+          (event) => event.section.main === section
+        );
+      }
+
+      if (subsection && Array.isArray(subsection)) {
+        fetchedEvents = fetchedEvents.filter((event) =>
+          subsection.includes(event.section.sub)
+        );
+      } else if (subsection) {
+        // For single subsection
+        fetchedEvents = fetchedEvents.filter(
+          (event) => event.section.sub === subsection
+        );
       }
 
       setEvents(
@@ -54,7 +75,7 @@ const Events = ({ country, currentUserId }) => {
 
   useEffect(() => {
     fetchEvents();
-  }, [currentUserId, country]);
+  }, [currentUserId, country, section, subsection]);
 
   if (loading) {
     return (
@@ -83,11 +104,12 @@ const Events = ({ country, currentUserId }) => {
   return (
     <main className="max-w-7xl mx-auto mt-10">
       <div className="text-center my-5">
-        {currentUser ? (
+        {/* Conditionally render AddEvent if hideAddEvent is false and user is signed in */}
+        {currentUser && !hideAddEvent && (
           <AddEvent onSubmitSuccess={fetchEvents} />
-        ) : (
-          <p>You must be signed in to add an event.</p>
         )}
+        {!currentUser && <p>You must be signed in to add an event.</p>}
+
         <div className="flex flex-wrap gap-4 mt-8 justify-center">
           {events && events.length > 0 ? (
             events.map((event) => (
@@ -111,21 +133,18 @@ const Events = ({ country, currentUserId }) => {
                     {event.title}
                   </h2>
                   <div className="text-left mt-0">
-                    <p>
-                      {/*              {event.description}
-                      {" --- "} */}
-                      {new Date(event.date).toLocaleDateString()}
-                    </p>
+                    <p>{new Date(event.date).toLocaleDateString()}</p>
                   </div>
                   <div className="text-left mt-0">
                     <p>
                       <strong>Country:</strong> {event.country}
                     </p>
-                  </div>
-                  <div className="text-left mt-0">
-                    {/*            <p>
-                      <strong>Section:</strong> {event.section}
-                    </p> */}
+                    <p>
+                      <strong>Section:</strong> {event.section.main}
+                    </p>
+                    <p>
+                      <strong>Subsection:</strong> {event.section.sub}
+                    </p>
                   </div>
                 </div>
               </Link>
