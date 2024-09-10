@@ -36,7 +36,7 @@ export default function Footer() {
         </div>
       </div>
       <hr className="border-slate-400 my-5 max-w-7xl mx-auto px-4" />
-      <div className="text-center py-4 text-white">
+      <div className="text-center py-4 mb-20 text-white">
         © 2024
         <a href="https://www.bravio.sk/" target="_blank">
           {" "}

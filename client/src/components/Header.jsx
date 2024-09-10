@@ -6,7 +6,7 @@ import { faHome, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import landscapeImage from "../assets/images/cover.jpg"; // Import the image
 
 export default function Header() {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user); // Get currentUser from Redux
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
@@ -16,7 +16,7 @@ export default function Header() {
   return (
     <div className="bg-black">
       {/* Full-width Landscape Image */}
-      <div className="w-full relative" style={{ paddingBottom: "26%" }}>
+      <div className="w-full relative" style={{ paddingBottom: "35%" }}>
         <img
           src={landscapeImage}
           alt="Landscape"
@@ -44,21 +44,20 @@ export default function Header() {
             <Link to="/wishlist">
               <li className="hover:text-gray-400">Wishlist</li>
             </Link>
-            <Link to="/about">
-              <li className="hover:text-gray-400">About</li>
-            </Link>
 
-            <Link to="/profile">
-              {currentUser ? (
+            {currentUser && currentUser._id ? (
+              <Link to="/profile">
                 <img
                   src={currentUser.profilePicture}
                   alt="profile"
                   className="h-7 w-7 rounded-full object-cover"
                 />
-              ) : (
+              </Link>
+            ) : (
+              <Link to="/sign-in">
                 <li className="hover:text-gray-400">Sign In</li>
-              )}
-            </Link>
+              </Link>
+            )}
           </ul>
         </div>
         {/* Mobile Menu */}
@@ -72,24 +71,23 @@ export default function Header() {
             <Link to="/my-events" onClick={toggleMobileMenu}>
               <li className="hover:text-gray-400">My Events</li>
             </Link>
-            <Link to="/favourites" onClick={toggleMobileMenu}>
+            <Link to="/wishlist" onClick={toggleMobileMenu}>
               <li className="hover:text-gray-400">Wishlist</li>
             </Link>
-            <Link to="/about" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-500">About</li>
-            </Link>
 
-            <Link to="/profile" onClick={toggleMobileMenu}>
-              {currentUser ? (
+            {currentUser && currentUser._id ? (
+              <Link to="/profile" onClick={toggleMobileMenu}>
                 <img
                   src={currentUser.profilePicture}
                   alt="profile"
                   className="h-7 w-7 rounded-full object-cover"
                 />
-              ) : (
+              </Link>
+            ) : (
+              <Link to="/sign-in" onClick={toggleMobileMenu}>
                 <li className="hover:text-gray-400">Sign In</li>
-              )}
-            </Link>
+              </Link>
+            )}
           </ul>
         )}
       </div>

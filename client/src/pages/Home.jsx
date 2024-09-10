@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import myImage from "../assets/images/3.jpg"; // Adjust the path as necessary
-import myImage2 from "../assets/images/1.jpg";
-import myImage3 from "../assets/images/2.jpg";
+
 import Events from "./Events";
 import { FaArrowUp } from "react-icons/fa"; // Import arrow up icon from react-icons
-import mapa from "../assets/images/mapa-mensia.jpg";
 
 export default function Home() {
   const [showScroll, setShowScroll] = useState(false);
@@ -31,25 +28,6 @@ export default function Home() {
     <main className="max-w-10xl mx-auto mt-10">
       <div className="max-w-7xl items-center mx-auto">
         <Events />
-        <h1 className="p-4 text-3xl font-bold  text-left">PLÁN JE JASNÝ ...</h1>
-        <img
-          src={mapa}
-          alt="Home"
-          className="cursor-pointer"
-          onClick={() => setIsImageExpanded(true)}
-        />
-        {isImageExpanded && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
-            onClick={() => setIsImageExpanded(false)}
-          >
-            <img
-              src={mapa}
-              alt="Enlarged map"
-              className="max-w-full max-h-full"
-            />
-          </div>
-        )}
       </div>
 
       <button
