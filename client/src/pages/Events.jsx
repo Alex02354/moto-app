@@ -128,10 +128,12 @@ const Events = ({
     <main className="max-w-7xl mx-auto mt-10">
       <div className="text-center my-5">
         {/* Conditionally render AddEvent if hideAddEvent is false and user is signed in */}
-        {currentUser && !hideAddEvent && (
+        {currentUser && currentUser._id && !hideAddEvent && (
           <AddEvent onSubmitSuccess={fetchEvents} />
         )}
-        {!currentUser && <p>You must be signed in to add an event.</p>}
+        {(!currentUser || !currentUser._id) && (
+          <p>You must be signed in to add an event.</p>
+        )}
 
         {/* Conditionally render Section Filtering Buttons */}
         {!hideFilterButtons && (
