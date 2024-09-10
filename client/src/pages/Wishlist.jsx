@@ -12,6 +12,12 @@ const Wishlist = () => {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
+    // If no user is signed in, show a message and stop loading
+    if (!currentUser) {
+      setLoading(false);
+      return;
+    }
+
     const fetchWishlist = async () => {
       try {
         const response = await axios.get(`/api/wishlist/${currentUser._id}`);
@@ -29,9 +35,7 @@ const Wishlist = () => {
       }
     };
 
-    if (currentUser) {
-      fetchWishlist();
-    }
+    fetchWishlist();
   }, [currentUser]);
 
   const renderItem = (item) => (
@@ -53,19 +57,32 @@ const Wishlist = () => {
     </Link>
   );
 
-  if (loading)
+  // Show loader when fetching wishlist data
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="loader"></div>
       </div>
     );
+  }
 
-  if (error)
+  // Show a message when no user is signed in
+  if (!currentUser) {
+    return (
+      <div className="text-center my-5">
+        <p>You must be signed in to view your wishlist events.</p>
+      </div>
+    );
+  }
+
+  // Handle any error that occurred while fetching wishlist data
+  if (error) {
     return (
       <div className="text-center my-5">
         <p>Error: {error}</p>
       </div>
     );
+  }
 
   return (
     <main className="max-w-7xl mx-auto mt-10 px-4 mb-52">
