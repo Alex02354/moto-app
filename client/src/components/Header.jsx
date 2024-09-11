@@ -16,7 +16,7 @@ export default function Header() {
   return (
     <div className="bg-black">
       {/* Full-width Landscape Image */}
-      <div className="w-full relative" style={{ paddingBottom: "35%" }}>
+      <div className="w-full relative" style={{ paddingBottom: "26%" }}>
         <img
           src={landscapeImage}
           alt="Landscape"

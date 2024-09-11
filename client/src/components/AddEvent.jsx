@@ -354,7 +354,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
               onChange={(e) =>
                 setEventData({ ...eventData, coordinates: e.target.value })
               }
-              placeholder="Coordinates"
+              placeholder="example 48.148598, 17.107748"
               className="input input-bordered"
               required
               // Disable the coordinates field if section.main is 'route' or 'itinerary'

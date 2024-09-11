@@ -37,14 +37,14 @@ const DeleteEvent = ({ eventId, onDeleteSuccess }) => {
           <div className="flex gap-4 mt-4">
             <button
               onClick={handleDelete}
-              className="btn btn-danger"
+              className="btn bg-yellow-400 hover:bg-yellow-600 text-black"
               disabled={isDeleting}
             >
               {isDeleting ? "Deleting..." : "Yes"}
             </button>
             <button
               onClick={() => setModalOpen(false)}
-              className="btn btn-secondary"
+              className="btn bg-danger"
             >
               No
             </button>

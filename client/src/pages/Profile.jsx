@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState, useEffect, useCallback } from "react";
 import {
   getDownloadURL,
@@ -7,7 +7,6 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { useDispatch } from "react-redux";
 import {
   updateUserStart,
   updateUserSuccess,
@@ -17,6 +16,7 @@ import {
   deleteUserFailure,
   signOut,
 } from "../redux/user/userSlice";
+import Modal from "../components/Modal"; // Assuming you already have this component
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -26,6 +26,8 @@ export default function Profile() {
   const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false); // Modal state for sign-out confirmation
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false); // Modal state for delete account confirmation
 
   const { currentUser, loading, error } = useSelector((state) => state.user);
 
@@ -114,6 +116,11 @@ export default function Profile() {
     }
   };
 
+  const openSignOutModal = () => setModalOpen(true);
+  const closeSignOutModal = () => setModalOpen(false);
+  const openDeleteModal = () => setDeleteModalOpen(true);
+  const closeDeleteModal = () => setDeleteModalOpen(false);
+
   return (
     <main className="max-w-7xl mx-auto mt-10">
       <div className="px-4 my-5 max-w-lg mx-auto">
@@ -178,12 +185,15 @@ export default function Profile() {
         </form>
         <div className="flex justify-between mt-5">
           <span
-            onClick={handleDeleteAccount}
+            onClick={openDeleteModal}
             className="text-red-700 cursor-pointer"
           >
             Delete Account
           </span>
-          <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+          <span
+            onClick={openSignOutModal}
+            className="text-red-700 cursor-pointer"
+          >
             Sign out
           </span>
         </div>
@@ -191,6 +201,53 @@ export default function Profile() {
         <p className="text-green-700 mt-5">
           {updateSuccess && "User is updated successfully!"}
         </p>
+
+        {/* Sign Out Confirmation Modal */}
+        <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+          <div className="p-4">
+            <h3 className="text-xl font-bold mb-4">Sign Out</h3>
+            <p>Are you sure you want to sign out?</p>
+            <div className="flex gap-4 mt-4">
+              <button
+                onClick={() => {
+                  handleSignOut();
+                  closeSignOutModal();
+                }}
+                className="btn bg-yellow-400 hover:bg-yellow-600 text-black"
+              >
+                Yes
+              </button>
+              <button onClick={closeSignOutModal} className="btn bg-danger">
+                No
+              </button>
+            </div>
+          </div>
+        </Modal>
+
+        {/* Delete Account Confirmation Modal */}
+        <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen}>
+          <div className="p-4">
+            <h3 className="text-xl font-bold mb-4">Delete Account</h3>
+            <p>
+              Are you sure you want to delete your account? This action cannot
+              be undone.
+            </p>
+            <div className="flex gap-4 mt-4">
+              <button
+                onClick={() => {
+                  handleDeleteAccount();
+                  closeDeleteModal();
+                }}
+                className="btn bg-yellow-400 hover:bg-yellow-600 text-black"
+              >
+                Yes
+              </button>
+              <button onClick={closeDeleteModal} className="btn bg-danger">
+                No
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </main>
   );

@@ -27,7 +27,7 @@ export default function Footer() {
             <FaYoutube />
           </a>
           <a
-            href="https://www.instagram.com/cviro85"
+            href="https://www.instagram.com/offroad_on_road"
             target="_blank"
             rel="noopener noreferrer"
           >
