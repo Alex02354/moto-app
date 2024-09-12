@@ -23,6 +23,7 @@ import Naturale from "./pages/Naturale";
 import Created from "./pages/Created";
 import Itinerary from "./pages/Itinerary";
 import CookieBanner from "./components/CookieBanner"; // Import CookieBanner
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 export default function App() {
   return (
@@ -93,6 +94,7 @@ export default function App() {
         <Route path="/events/:id" element={<EventDetail />} />
         <Route path="/my-events" element={<MyEvents />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
         </Route>
