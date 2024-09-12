@@ -34,13 +34,13 @@ const Places = ({ section, subsection }) => {
           src={built}
           alt="Built"
           onClick={() => navigate("/events/places/built")}
-          className="cursor-pointer w-full max-w-72 sm:max-w-xs md:max-w-xs lg:max-w-xs h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-64 sm:max-w-xs md:max-w-xs lg:max-w-xs h-auto my-2 px-4 py-3"
         />
         <img
           src={views}
           alt="Views"
           onClick={() => navigate("/events/places/views")}
-          className="cursor-pointer w-full max-w-72 sm:max-w-xs md:max-w-xs lg:max-w-xs h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-64 sm:max-w-xs md:max-w-xs lg:max-w-xs h-auto my-2 px-4 py-3"
         />
       </div>
 

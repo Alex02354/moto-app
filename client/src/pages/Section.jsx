@@ -24,13 +24,13 @@ const Section = ({ section, subsection }) => {
           src={routes}
           alt="route"
           onClick={() => navigate("/events/route")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-sm h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-72 sm:max-w-sm md:max-w-sm lg:max-w-sm h-auto my-2 px-4 py-3"
         />
         <img
           src={camps}
           alt="camp"
           onClick={() => navigate("/events/camp")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-sm h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-72 sm:max-w-sm md:max-w-md lg:max-w-sm h-auto my-2 px-4 py-3"
         />
         <img
           src={itineraries}
