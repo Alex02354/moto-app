@@ -12,7 +12,7 @@ const Natural = ({ section, subsection }) => {
         <img
           src={nature}
           alt="Nature"
-          className="w-64 h-auto my-2 px-4 py-3"
+          className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
       </div>

@@ -9,8 +9,7 @@ const Naturale = ({ section, subsection }) => {
         <img
           src={naturale}
           alt="Naturale"
-          className="w-64 h-auto my-2 px-4 py-3"
-          // Add custom styles as needed
+          className="w-full max-w-72 sm:max-w-xs md:max-w-sm lg:max-w-96 h-auto my-2 px-4 py-3"
         />
       </div>
       <div className="text-center my-5">

@@ -9,7 +9,7 @@ const Caravan = ({ section, subsection }) => {
         <img
           src={caravan}
           alt="Caravan"
-          className="w-64 h-auto my-2 px-4 py-3"
+          className="w-full max-w-md sm:max-w-md md:max-w-lg lg:max-w-xl h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
       </div>

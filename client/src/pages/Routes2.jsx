@@ -15,7 +15,7 @@ const Routes2 = ({ section, subsection }) => {
         <img
           src={routes}
           alt="Routes"
-          className="w-full max-w-xs sm:max-w-xs md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
+          className="w-full max-w-72 sm:max-w-72 md:max-w-xs lg:max-w-sm h-auto my-2 px-4 py-3"
         />
         {/* Divider */}
         <hr className="border-black border-t-2 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl my-4" />
@@ -27,13 +27,13 @@ const Routes2 = ({ section, subsection }) => {
           src={caravan}
           alt="Caravan"
           onClick={() => navigate("/events/route/caravan")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-md sm:max-w-md md:max-w-lg lg:max-w-xl h-auto my-2 px-4 py-3"
         />
         <img
           src={offroad}
           alt="Offroad"
           onClick={() => navigate("/events/route/offroad")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-md lg:max-w-lg h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-md h-auto my-2 px-4 py-3"
         />
       </div>
 

@@ -10,7 +10,7 @@ const Itinerary = ({ section, subsection }) => {
         <img
           src={itineraries}
           alt="Itinerary"
-          className="w-64 h-auto my-2 px-4 py-3"
+          className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
       </div>

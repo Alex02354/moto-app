@@ -4,12 +4,14 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import countries from "../data/countries"; // Import the list of countries
 
 const Wishlist = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
+  const [selectedCountry, setSelectedCountry] = useState("ALL"); // State for country dropdown
 
   useEffect(() => {
     // If no user is signed in, show a message and stop loading
@@ -37,6 +39,11 @@ const Wishlist = () => {
 
     fetchWishlist();
   }, [currentUser]);
+
+  const filteredWishlist =
+    selectedCountry === "ALL"
+      ? wishlist
+      : wishlist.filter((item) => item.country === selectedCountry);
 
   const renderItem = (item) => (
     <Link to={`/events/${item.eventID}`} key={item._id} className="block">
@@ -94,9 +101,26 @@ const Wishlist = () => {
         />
         <h1 className="text-3xl font-bold">Wishlist</h1>
       </div>
+
+      {/* Country Filtering Dropdown */}
+      <div className="flex items-center justify-center mb-8">
+        <select
+          value={selectedCountry}
+          onChange={(e) => setSelectedCountry(e.target.value)}
+          className="p-2 border rounded"
+        >
+          <option value="ALL">All Countries</option>
+          {countries.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {wishlist.length > 0 ? (
-          wishlist.map(renderItem)
+        {filteredWishlist.length > 0 ? (
+          filteredWishlist.map(renderItem)
         ) : (
           <p className="text-center col-span-full">Your wishlist is empty.</p>
         )}

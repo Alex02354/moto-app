@@ -16,7 +16,7 @@ const Places = ({ section, subsection }) => {
         <img
           src={places}
           alt="Places"
-          className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-lg h-auto my-2 px-4 py-3"
+          className="w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-md h-auto my-2 px-4 py-3"
         />
         {/* Divider */}
         <hr className="border-black border-t-2 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl my-4" />
@@ -28,19 +28,19 @@ const Places = ({ section, subsection }) => {
           src={nature}
           alt="Nature"
           onClick={() => navigate("/events/places/nature")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-lg h-auto my-2 px-4 py-3"
+          className="cursor-pointer  w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-sm h-auto my-2 px-4 py-3"
         />
         <img
           src={built}
           alt="Built"
           onClick={() => navigate("/events/places/built")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-72 sm:max-w-xs md:max-w-xs lg:max-w-xs h-auto my-2 px-4 py-3"
         />
         <img
           src={views}
           alt="Views"
           onClick={() => navigate("/events/places/views")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-72 sm:max-w-xs md:max-w-xs lg:max-w-xs h-auto my-2 px-4 py-3"
         />
       </div>
 

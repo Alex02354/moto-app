@@ -15,7 +15,7 @@ const Camps = ({ section, subsection }) => {
         <img
           src={camps}
           alt="Camps"
-          className="w-full max-w-xs sm:max-w-xs md:max-w-md lg:max-w-lg h-auto my-2 px-4 py-3"
+          className="w-full max-w-72 sm:max-w-xs md:max-w-sm lg:max-w-96 h-auto my-2 px-4 py-3"
         />
         {/* Divider */}
         <hr className="border-black border-t-2 w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl my-4" />
@@ -27,13 +27,13 @@ const Camps = ({ section, subsection }) => {
           src={natural}
           alt="Natural"
           onClick={() => navigate("/events/camp/natural")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-md lg:max-w-lg h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-72 sm:max-w-xs md:max-w-sm lg:max-w-96 h-auto my-2 px-4 py-3"
         />
         <img
           src={created}
           alt="Created"
           onClick={() => navigate("/events/camp/created")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-lg sm:max-w-lg md:max-w-2xl lg:max-w-2xl h-auto my-2 px-4 py-3"
         />
       </div>
 

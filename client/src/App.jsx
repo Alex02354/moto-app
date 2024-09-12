@@ -22,6 +22,7 @@ import Offroad from "./pages/Offroad";
 import Naturale from "./pages/Naturale";
 import Created from "./pages/Created";
 import Itinerary from "./pages/Itinerary";
+import CookieBanner from "./components/CookieBanner"; // Import CookieBanner
 
 export default function App() {
   return (
@@ -96,6 +97,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Routes>
+      <CookieBanner /> {/* Add CookieBanner here */}
       <Footer />
     </BrowserRouter>
   );

@@ -17,26 +17,26 @@ const Section = ({ section, subsection }) => {
             src={places}
             alt="Places"
             onClick={() => navigate("/events/places")}
-            className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
+            className="cursor-pointer w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
           />
         </Link>
         <img
           src={routes}
           alt="route"
           onClick={() => navigate("/events/route")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-sm h-auto my-2 px-4 py-3"
         />
         <img
           src={camps}
           alt="camp"
           onClick={() => navigate("/events/camp")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-sm h-auto my-2 px-4 py-3"
         />
         <img
           src={itineraries}
           alt="Itineraries"
           onClick={() => navigate("/events/itinerary")}
-          className="cursor-pointer w-full max-w-md sm:max-w-lg md:max-w-lg lg:max-w-xl h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-xl h-auto my-2 px-4 py-3"
         />
       </div>
       <div className="text-center my-5">

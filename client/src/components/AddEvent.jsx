@@ -158,14 +158,14 @@ const AddEvent = ({ onSubmitSuccess }) => {
           src={discoverImage}
           alt="Add New Event"
           onClick={() => navigate("/events/section")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-lg h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-lg h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
         <img
           src={addEventImage}
           alt="Add New Event"
           onClick={() => setModalOpen(true)}
-          className="cursor-pointer w-full max-w-xs sm:max-w-md md:max-w-md lg:max-w-md h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-72 sm:max-w-xs md:max-w-xs lg:max-w-md h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
       </div>

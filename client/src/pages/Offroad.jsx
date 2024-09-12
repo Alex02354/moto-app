@@ -9,7 +9,7 @@ const Offroad = ({ section, subsection }) => {
         <img
           src={offroad}
           alt="Offroad"
-          className="w-64 h-auto my-2 px-4 py-3"
+          className="w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-md h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
       </div>

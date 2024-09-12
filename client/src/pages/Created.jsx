@@ -9,7 +9,7 @@ const Created = ({ section, subsection }) => {
         <img
           src={created}
           alt="Created"
-          className="w-64 h-auto my-2 px-4 py-3"
+          className="w-full max-w-lg sm:max-w-lg md:max-w-2xl lg:max-w-2xl h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
       </div>
