@@ -136,7 +136,9 @@ const EventDetail = () => {
             <div className="flex flex-col md:flex-row gap-8">
               <div className="md:w-1/2 w-full flex flex-col gap-4">
                 <div className="text-left">
-                  <p className="mb-4">{event.description}</p>
+                  <p className="mb-4" style={{ whiteSpace: "pre-wrap" }}>
+                    {event.description}
+                  </p>
                   <p className="mb-2">
                     <strong>Access:</strong> {renderAccessIcon()}
                   </p>
