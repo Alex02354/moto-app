@@ -1,15 +1,22 @@
 import React from "react";
-import { FaFacebook, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 export default function Footer() {
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
+
   return (
     <footer className="bg-black text-white py-6">
       <div className="max-w-7xl mx-auto px-4 text-center">
         <div className="mb-4">
-          <h2 className="text-2xl font-bold">Contact Us</h2>
-          <p>OFF-ROAD ON ROAD</p>
-          <p>Email: info@offroadonroad.sk</p>
-          <p>Phone: +421 904 675 465</p>
+          <h2 className="text-2xl font-bold">{t("contact_us")}</h2>
+          <p>{t("offroadonroad")}</p>
+          <p>{t("email")}</p>
+          <p>{t("phone")}</p>
         </div>
         <div className="flex justify-center space-x-4 text-2xl">
           <a
@@ -42,7 +49,7 @@ export default function Footer() {
           {" "}
           www.bravio.sk
         </a>{" "}
-        All rights reserved.
+        {t("rights")}
       </div>
     </footer>
   );

@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import landscapeImage from "../assets/images/cover.jpg"; // Import the image
+import "../data/i18n";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user); // Get currentUser from Redux
@@ -12,6 +15,10 @@ export default function Header() {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
 
   return (
     <div className="bg-black">
@@ -39,10 +46,10 @@ export default function Header() {
               </li>
             </Link>
             <Link to="/my-events">
-              <li className="hover:text-gray-400">My Events</li>
+              <li className="hover:text-gray-400">{t("my_events")}</li>
             </Link>
             <Link to="/wishlist">
-              <li className="hover:text-gray-400">Wishlist</li>
+              <li className="hover:text-gray-400">{t("wishlist")}</li>
             </Link>
 
             {currentUser && currentUser._id ? (
@@ -55,7 +62,7 @@ export default function Header() {
               </Link>
             ) : (
               <Link to="/sign-in">
-                <li className="hover:text-gray-400">Sign In</li>
+                <li className="hover:text-gray-400">{t("signin")}</li>
               </Link>
             )}
           </ul>
@@ -69,10 +76,10 @@ export default function Header() {
               </li>
             </Link>
             <Link to="/my-events" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-400">My Events</li>
+              <li className="hover:text-gray-400">{t("my_events")}</li>
             </Link>
             <Link to="/wishlist" onClick={toggleMobileMenu}>
-              <li className="hover:text-gray-400">Wishlist</li>
+              <li className="hover:text-gray-400">{t("wishlist")}</li>
             </Link>
 
             {currentUser && currentUser._id ? (
@@ -85,7 +92,7 @@ export default function Header() {
               </Link>
             ) : (
               <Link to="/sign-in" onClick={toggleMobileMenu}>
-                <li className="hover:text-gray-400">Sign In</li>
+                <li className="hover:text-gray-400">{t("signin")}</li>
               </Link>
             )}
           </ul>

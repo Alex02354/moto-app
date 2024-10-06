@@ -17,8 +17,14 @@ import {
   signOut,
 } from "../redux/user/userSlice";
 import Modal from "../components/Modal"; // Assuming you already have this component
+import "../data/i18n";
+import { useTranslation } from "react-i18next";
 
 export default function Profile() {
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
   const dispatch = useDispatch();
   const fileRef = useRef(null);
   const [image, setImage] = useState(undefined);
@@ -125,7 +131,7 @@ export default function Profile() {
     <main className="max-w-7xl mx-auto mt-10">
       <div className="px-4 my-5 max-w-lg mx-auto">
         <h1 className="text-3xl font-bold text-slate-800 my-5 text-center">
-          Profile
+          {t("profile")}
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
@@ -149,9 +155,7 @@ export default function Profile() {
             ) : imagePercent > 0 && imagePercent < 100 ? (
               <span className="text-slate-700">{`Uploading: ${imagePercent} %`}</span>
             ) : imagePercent === 100 ? (
-              <span className="text-green-700">
-                Image uploaded successfully
-              </span>
+              <span className="text-green-700">{t("success")}</span>
             ) : (
               ""
             )}
@@ -160,7 +164,7 @@ export default function Profile() {
             defaultValue={currentUser.username}
             type="text"
             id="username"
-            placeholder="Username"
+            placeholder={t("username")}
             className="bg-slate-100 rounded-lg p-3"
             onChange={handleChange}
           />
@@ -175,12 +179,12 @@ export default function Profile() {
           <input
             type="password"
             id="password"
-            placeholder="Password"
+            placeholder={t("password")}
             className="bg-slate-100 rounded-lg p-3"
             onChange={handleChange}
           />
           <button className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
-            {loading ? "Loading..." : "Update"}
+            {loading ? t("loading") : t("update")}
           </button>
         </form>
         <div className="flex justify-between mt-5">
@@ -188,13 +192,13 @@ export default function Profile() {
             onClick={openDeleteModal}
             className="text-red-700 cursor-pointer"
           >
-            Delete Account
+            {t("delete_account")}
           </span>
           <span
             onClick={openSignOutModal}
             className="text-red-700 cursor-pointer"
           >
-            Sign out
+            {t("sign_out")}
           </span>
         </div>
         <p className="text-red-700 mt-5">{error && "Something went wrong!"}</p>
@@ -205,8 +209,8 @@ export default function Profile() {
         {/* Sign Out Confirmation Modal */}
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <div className="p-4">
-            <h3 className="text-xl font-bold mb-4">Sign Out</h3>
-            <p>Are you sure you want to sign out?</p>
+            <h3 className="text-xl font-bold mb-4">{t("sign_out")}</h3>
+            <p>{t("sign_out_warning")}</p>
             <div className="flex gap-4 mt-4">
               <button
                 onClick={() => {
@@ -215,10 +219,10 @@ export default function Profile() {
                 }}
                 className="btn bg-yellow-400 hover:bg-yellow-600 text-black"
               >
-                Yes
+                {t("yes")}
               </button>
               <button onClick={closeSignOutModal} className="btn bg-danger">
-                No
+                {t("no")}
               </button>
             </div>
           </div>
@@ -227,11 +231,8 @@ export default function Profile() {
         {/* Delete Account Confirmation Modal */}
         <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen}>
           <div className="p-4">
-            <h3 className="text-xl font-bold mb-4">Delete Account</h3>
-            <p>
-              Are you sure you want to delete your account? This action cannot
-              be undone.
-            </p>
+            <h3 className="text-xl font-bold mb-4">{t("delete_account")}</h3>
+            <p>{t("delete_account_warning")}</p>
             <div className="flex gap-4 mt-4">
               <button
                 onClick={() => {
@@ -240,10 +241,10 @@ export default function Profile() {
                 }}
                 className="btn bg-yellow-400 hover:bg-yellow-600 text-black"
               >
-                Yes
+                {t("yes")}
               </button>
               <button onClick={closeDeleteModal} className="btn bg-danger">
-                No
+                {t("no")}
               </button>
             </div>
           </div>

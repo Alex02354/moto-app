@@ -14,8 +14,21 @@ import {
   faHeartBroken,
   faMap,
 } from "@fortawesome/free-solid-svg-icons";
+import "../data/i18n";
+import { useTranslation } from "react-i18next";
 
 const EventDetail = () => {
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
+
+  // Helper function to translate the country name
+  const translateCountry = (countryName) => {
+    // Use the 't' function from i18next to look up translations for the country name
+    return t(`countries.${countryName}`, { defaultValue: countryName });
+  };
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
@@ -140,18 +153,19 @@ const EventDetail = () => {
                     {event.description}
                   </p>
                   <p className="mb-2">
-                    <strong>Access:</strong> {renderAccessIcon()}
+                    <strong>{t("access")}:</strong> {renderAccessIcon()}
                   </p>
                   <p className="mb-2">
-                    <strong>Date:</strong>{" "}
+                    <strong>{t("date")}:</strong>{" "}
                     {new Date(event.date).toLocaleDateString()}
                   </p>
                   <p className="mb-2">
-                    <strong>Country:</strong> {event.country}
+                    <strong>{t("country")}:</strong>{" "}
+                    {translateCountry(event.country)}
                   </p>
                   {event.user && event.user.currentUser && (
                     <p>
-                      <strong>Created by:</strong>{" "}
+                      <strong>{t("created_by")}:</strong>{" "}
                       {event.user.currentUser.username}
                     </p>
                   )}
@@ -164,9 +178,7 @@ const EventDetail = () => {
                     <FontAwesomeIcon
                       icon={isWishlisted ? faHeartBroken : faHeart}
                     />
-                    {isWishlisted
-                      ? " Remove from Wishlist"
-                      : " Add to Wishlist"}
+                    {isWishlisted ? t("rfw") : t("atw")}
                   </button>
                   {isEventOwner && (
                     <div className="flex gap-4 mt-4">
@@ -199,7 +211,7 @@ const EventDetail = () => {
                 className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold text-center py-3 px-4 rounded-lg"
               >
                 <FontAwesomeIcon icon={faMap} style={{ marginRight: 10 }} />
-                Map Link
+                {t("map_link")}
               </a>
             )}
           </div>

@@ -10,6 +10,8 @@ import {
   faTruckMonster,
 } from "@fortawesome/free-solid-svg-icons";
 import countries from "../data/countries"; // Import the list of countries
+import "../data/i18n";
+import { useTranslation } from "react-i18next";
 
 const Events = ({
   country,
@@ -19,6 +21,29 @@ const Events = ({
   hideAddEvent,
   hideFilterButtons,
 }) => {
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
+
+  // Helper function to translate the country name
+  const translateCountry = (countryName) => {
+    // Use the 't' function from i18next to look up translations for the country name
+    return t(`countries.${countryName}`, { defaultValue: countryName });
+  };
+
+  // Helper function to translate the main section
+  const translateMainSection = (mainSection) => {
+    return t(`sections.${mainSection}`, { defaultValue: mainSection });
+  };
+
+  // Helper function to translate the subsection based on the main section
+  const translateSubSection = (mainSection, subSection) => {
+    // Dynamically map subsection translations based on main section type
+    const sectionType = `${mainSection}Sections`;
+    return t(`${sectionType}.${subSection}`, { defaultValue: subSection });
+  };
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -131,9 +156,7 @@ const Events = ({
         {currentUser && currentUser._id && !hideAddEvent && (
           <AddEvent onSubmitSuccess={fetchEvents} />
         )}
-        {(!currentUser || !currentUser._id) && (
-          <p>You must be signed in to add an event.</p>
-        )}
+        {(!currentUser || !currentUser._id) && <p>{t("signedin")}</p>}
 
         {/* Conditionally render Section Filtering Buttons */}
         {!hideFilterButtons && (
@@ -146,7 +169,7 @@ const Events = ({
                   : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
               }`}
             >
-              ALL
+              {t("all")}
             </button>
             <button
               onClick={() => setSelectedSection("route")}
@@ -156,7 +179,7 @@ const Events = ({
                   : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
               }`}
             >
-              ROUTES
+              {t("routes")}
             </button>
             <button
               onClick={() => setSelectedSection("camp")}
@@ -166,7 +189,7 @@ const Events = ({
                   : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
               }`}
             >
-              CAMPS
+              {t("camps")}
             </button>
             <button
               onClick={() => setSelectedSection("places")}
@@ -176,7 +199,7 @@ const Events = ({
                   : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
               }`}
             >
-              PLACES
+              {t("places2")}
             </button>
             <button
               onClick={() => setSelectedSection("itinerary")}
@@ -186,7 +209,7 @@ const Events = ({
                   : "bg-yellow-400 hover:bg-black hover:text-yellow-400"
               }`}
             >
-              ITINERARY
+              {t("itinerary2")}
             </button>
           </div>
         )}
@@ -198,12 +221,17 @@ const Events = ({
             onChange={(e) => setSelectedCountry(e.target.value)}
             className="p-2 border rounded"
           >
-            <option value="ALL">All Countries</option>
-            {countries.map((country) => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
+            {/* Default option for all countries */}
+            <option value="ALL">{t("all_countries")}</option>
+
+            {/* Map through the keys of the countries object in the translation */}
+            {Object.keys(t("countries", { returnObjects: true })).map(
+              (countryKey) => (
+                <option key={countryKey} value={countryKey}>
+                  {t(`countries.${countryKey}`)} {/* Translated country name */}
+                </option>
+              )
+            )}
           </select>
         </div>
 
@@ -235,11 +263,16 @@ const Events = ({
                   </div>
                   <div className="text-left mt-0">
                     <p>
-                      <strong>Country:</strong> {event.country}
+                      <strong>{t("country")}:</strong>{" "}
+                      {translateCountry(event.country)}
                     </p>
                     <p>
-                      <strong>Section:</strong> {event.section.main}{" "}
-                      {event.section.sub}
+                      <strong>{t("section")}:</strong>{" "}
+                      {translateMainSection(event.section.main)}{" "}
+                      {translateSubSection(
+                        event.section.main,
+                        event.section.sub
+                      )}
                     </p>
                   </div>
                 </div>

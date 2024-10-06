@@ -5,8 +5,13 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import countries from "../data/countries"; // Import the list of countries
+import { useTranslation } from "react-i18next";
 
 const Wishlist = () => {
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -56,9 +61,12 @@ const Wishlist = () => {
         <div className="p-4">
           <h3 className="text-lg font-semibold">{item.title}</h3>
           <p className="text-sm">
-            Section: {item.section.main} - {item.section.sub}
+            {t("section")}: {translateMainSection(item.section.main)}{" "}
+            {translateSubSection(item.section.main, item.section.sub)}
           </p>
-          <p className="text-sm">Country: {item.country}</p>
+          <p className="text-sm">
+            {t("country")}: {translateCountry(item.country)}
+          </p>
         </div>
       </div>
     </Link>
@@ -91,6 +99,24 @@ const Wishlist = () => {
     );
   }
 
+  // Helper function to translate the country name
+  const translateCountry = (countryName) => {
+    // Use the 't' function from i18next to look up translations for the country name
+    return t(`countries.${countryName}`, { defaultValue: countryName });
+  };
+
+  // Helper function to translate the main section
+  const translateMainSection = (mainSection) => {
+    return t(`sections.${mainSection}`, { defaultValue: mainSection });
+  };
+
+  // Helper function to translate the subsection based on the main section
+  const translateSubSection = (mainSection, subSection) => {
+    // Dynamically map subsection translations based on main section type
+    const sectionType = `${mainSection}Sections`;
+    return t(`${sectionType}.${subSection}`, { defaultValue: subSection });
+  };
+
   return (
     <main className="max-w-7xl mx-auto mt-10 px-4 mb-52">
       <div className="flex items-center justify-center mb-8">
@@ -99,7 +125,7 @@ const Wishlist = () => {
           size="2x"
           className="text-red-600 mr-2"
         />
-        <h1 className="text-3xl font-bold">Wishlist</h1>
+        <h1 className="text-3xl font-bold">{t("wishlist")}</h1>
       </div>
 
       {/* Country Filtering Dropdown */}
@@ -109,12 +135,15 @@ const Wishlist = () => {
           onChange={(e) => setSelectedCountry(e.target.value)}
           className="p-2 border rounded"
         >
-          <option value="ALL">All Countries</option>
-          {countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
+          <option value="ALL">{t("all_countries")}</option>
+          {/* Map through the keys of the countries object in the translation */}
+          {Object.keys(t("countries", { returnObjects: true })).map(
+            (countryKey) => (
+              <option key={countryKey} value={countryKey}>
+                {t(`countries.${countryKey}`)} {/* Translated country name */}
+              </option>
+            )
+          )}
         </select>
       </div>
 
@@ -122,7 +151,7 @@ const Wishlist = () => {
         {filteredWishlist.length > 0 ? (
           filteredWishlist.map(renderItem)
         ) : (
-          <p className="text-center col-span-full">Your wishlist is empty.</p>
+          <p className="text-center col-span-full">{t("empty")}</p>
         )}
       </div>
     </main>

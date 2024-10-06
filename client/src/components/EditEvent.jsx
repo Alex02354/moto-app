@@ -11,8 +11,14 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import "../data/i18n";
+import { useTranslation } from "react-i18next";
 
 const EditEvent = ({ event, onSubmitSuccess }) => {
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
   const [modalOpen, setModalOpen] = useState(false);
   const [eventData, setEventData] = useState({
     title: "",
@@ -116,7 +122,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
 
   const handleBlur = () => {
     if (!validateCoordinates(eventData.coordinates)) {
-      setError("Invalid coordinates format. Use XX.XXXXXX, YY.YYYYYY.");
+      setError(t("coordinates_warning"));
     } else {
       setError(null);
     }
@@ -142,14 +148,14 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
         onClick={() => setModalOpen(true)}
         className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 px-4 rounded-lg"
       >
-        Edit Event
+        {t("edit_event")}
       </button>
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
-          <h3 className="text-xl font-bold mb-4">Edit Event</h3>
+          <h3 className="text-xl font-bold mb-4">{t("edit_event")}</h3>
           {/* Main Section */}
           <div className="form-control">
-            <label className="label">Main Section</label>
+            <label className="label">{t("main_section")}</label>
             <select
               name="sectionMain"
               value={eventData.section.main}
@@ -157,18 +163,18 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               className="select select-bordered"
               required
             >
-              <option value="">Select a main section</option>
-              <option value="camp">Camp</option>
-              <option value="route">Route</option>
-              <option value="itinerary">Itinerary</option>
-              <option value="places">Places</option>
+              <option value="">{t("select_main_section")}</option>
+              <option value="camp">{t("camp")}</option>
+              <option value="route">{t("route")}</option>
+              <option value="itinerary">{t("itinerary")}</option>
+              <option value="places">{t("places")}</option>
             </select>
           </div>
 
           {/* Sub-sections based on the selected Main Section */}
           {eventData.section.main === "camp" && (
             <div className="form-control">
-              <label className="label">Camp Sub-section</label>
+              <label className="label">{t("camp_subsection")}</label>
               <select
                 name="sectionSub"
                 value={eventData.section.sub}
@@ -176,16 +182,16 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
                 className="select select-bordered"
                 required
               >
-                <option value="">Select a sub-section</option>
-                <option value="natural">Natural</option>
-                <option value="created">Created</option>
+                <option value="">{t("select_sub_section")}</option>
+                <option value="natural">{t("natural")}</option>
+                <option value="created">{t("created")}</option>
               </select>
             </div>
           )}
 
           {eventData.section.main === "route" && (
             <div className="form-control">
-              <label className="label">Route Sub-section</label>
+              <label className="label">{t("route_subsection")}</label>
               <select
                 name="sectionSub"
                 value={eventData.section.sub}
@@ -193,16 +199,16 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
                 className="select select-bordered"
                 required
               >
-                <option value="">Select a sub-section</option>
-                <option value="offroad">Offroad</option>
-                <option value="caravan/car">Caravan/Car</option>
+                <option value="">{t("select_sub_section")}</option>
+                <option value="offroad">{t("offroad")}</option>
+                <option value="caravan/car">{t("caravan_car")}</option>
               </select>
             </div>
           )}
 
           {eventData.section.main === "places" && (
             <div className="form-control">
-              <label className="label">Places Sub-section</label>
+              <label className="label">{t("places_subsection")}</label>
               <select
                 name="sectionSub"
                 value={eventData.section.sub}
@@ -210,17 +216,17 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
                 className="select select-bordered"
                 required
               >
-                <option value="">Select a sub-section</option>
-                <option value="nature">Nature</option>
-                <option value="built">Built</option>
-                <option value="views">Views</option>
+                <option value="">{t("select_sub_section")}</option>
+                <option value="nature">{t("nature")}</option>
+                <option value="built">{t("built")}</option>
+                <option value="views">{t("views")}</option>
               </select>
             </div>
           )}
 
           {/* Country Field */}
           <div className="form-control">
-            <label className="label">Country</label>
+            <label className="label">{t("country")}</label>
             <select
               name="country"
               value={eventData.country}
@@ -228,103 +234,117 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               className="select select-bordered"
               required
             >
-              <option value="">Select a country</option>
-              <option value="Afghanistan">Afghanistan</option>
-              <option value="Albania">Albania</option>
-              <option value="Algeria">Algeria</option>
-              <option value="Andorra">Andorra</option>
-              <option value="Argentina">Argentina</option>
-              <option value="Armenia">Armenia</option>
-              <option value="Australia">Australia</option>
-              <option value="Austria">Austria</option>
-              <option value="Azerbaijan">Azerbaijan</option>
-              <option value="Belarus">Belarus</option>
-              <option value="Belgium">Belgium</option>
-              <option value="Bolivia">Bolivia</option>
-              <option value="Bosnia_Herzegovina">Bosnia_Herzegovina</option>
-              <option value="Brazil">Brazil</option>
-              <option value="Bulgaria">Bulgaria</option>
-              <option value="Canada">Canada</option>
-              <option value="China">China</option>
-              <option value="Colombia">Colombia</option>
-              <option value="Croatia">Croatia</option>
-              <option value="Cyprus">Cyprus</option>
-              <option value="Czechia">Czechia</option>
-              <option value="Denmark">Denmark</option>
-              <option value="Egypt">Egypt</option>
-              <option value="Estonia">Estonia</option>
-              <option value="Finland">Finland</option>
-              <option value="France">France</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Germany">Germany</option>
-              <option value="Greece">Greece</option>
-              <option value="Hungary">Hungary</option>
-              <option value="Iceland">Iceland</option>
-              <option value="India">India</option>
-              <option value="Indonesia">Indonesia</option>
-              <option value="Iran">Iran</option>
-              <option value="Iraq">Iraq</option>
-              <option value="Ireland">Ireland</option>
-              <option value="Israel">Israel</option>
-              <option value="Italy">Italy</option>
-              <option value="Japan">Japan</option>
-              <option value="Jordan">Jordan</option>
-              <option value="Kazakhstan">Kazakhstan</option>
-              <option value="Kosovo">Kosovo</option>
-              <option value="Kyrgyzstan">Kyrgyzstan</option>
-              <option value="Latvia">Latvia</option>
-              <option value="Lebanon">Lebanon</option>
-              <option value="Libya">Libya</option>
-              <option value="Liechtenstein">Liechtenstein</option>
-              <option value="Lithuania">Lithuania</option>
-              <option value="Luxembourg">Luxembourg</option>
-              <option value="Malta">Malta</option>
-              <option value="Mexico">Mexico</option>
-              <option value="Moldova">Moldova</option>
-              <option value="Monaco">Monaco</option>
-              <option value="Mongolia">Mongolia</option>
-              <option value="Montenegro">Montenegro</option>
-              <option value="Morocco">Morocco</option>
-              <option value="Netherlands">Netherlands</option>
-              <option value="New_Zealand">New Zealand</option>
-              <option value="North Macedonia">North Macedonia</option>
-              <option value="Norway">Norway</option>
-              <option value="Oman">Oman</option>
-              <option value="Pakistan">Pakistan</option>
-              <option value="Peru">Peru</option>
-              <option value="Poland">Poland</option>
-              <option value="Portugal">Portugal</option>
-              <option value="Romania">Romania</option>
-              <option value="Russia">Russia</option>
-              <option value="San_Marino">San Marino</option>
-              <option value="Saudi_Arabia">Saudi Arabia</option>
-              <option value="Serbia">Serbia</option>
-              <option value="Slovakia">Slovakia</option>
-              <option value="Slovenia">Slovenia</option>
-              <option value="Spain">Spain</option>
-              <option value="Sweden">Sweden</option>
-              <option value="Switzerland">Switzerland</option>
-              <option value="Syria">Syria</option>
-              <option value="Tajikistan">Tajikistan</option>
-              <option value="Thailand">Thailand</option>
-              <option value="Tunisia">Tunisia</option>
-              <option value="Turkey">Turkey</option>
-              <option value="Turkmenistan">Turkmenistan</option>
-              <option value="United_Arab_Emirates">United Arab Emirates</option>
-              <option value="United_Kingdom">United Kingdom</option>
-              <option value="United_States_of_America">
-                United States of America
+              <option value="">{t("select_country")}</option>
+              <option value="Afghanistan">{t("countries.Afghanistan")}</option>
+              <option value="Albania">{t("countries.Albania")}</option>
+              <option value="Algeria">{t("countries.Algeria")}</option>
+              <option value="Andorra">{t("countries.Andorra")}</option>
+              <option value="Argentina">{t("countries.Argentina")}</option>
+              <option value="Armenia">{t("countries.Armenia")}</option>
+              <option value="Australia">{t("countries.Australia")}</option>
+              <option value="Austria">{t("countries.Austria")}</option>
+              <option value="Azerbaijan">{t("countries.Azerbaijan")}</option>
+              <option value="Belarus">{t("countries.Belarus")}</option>
+              <option value="Belgium">{t("countries.Belgium")}</option>
+              <option value="Bolivia">{t("countries.Bolivia")}</option>
+              <option value="Bosnia_Herzegovina">
+                {t("countries.Bosnia_Herzegovina")}
               </option>
-              <option value="Uzbekistan">Uzbekistan</option>
-              <option value="Venezuela">Venezuela</option>
-              <option value="Vietnam">Vietnam</option>
-              <option value="Yemen">Yemen</option>
+              <option value="Brazil">{t("countries.Brazil")}</option>
+              <option value="Bulgaria">{t("countries.Bulgaria")}</option>
+              <option value="Canada">{t("countries.Canada")}</option>
+              <option value="China">{t("countries.China")}</option>
+              <option value="Colombia">{t("countries.Colombia")}</option>
+              <option value="Croatia">{t("countries.Croatia")}</option>
+              <option value="Cyprus">{t("countries.Cyprus")}</option>
+              <option value="Czechia">{t("countries.Czechia")}</option>
+              <option value="Denmark">{t("countries.Denmark")}</option>
+              <option value="Egypt">{t("countries.Egypt")}</option>
+              <option value="Estonia">{t("countries.Estonia")}</option>
+              <option value="Finland">{t("countries.Finland")}</option>
+              <option value="France">{t("countries.France")}</option>
+              <option value="Georgia">{t("countries.Georgia")}</option>
+              <option value="Germany">{t("countries.Germany")}</option>
+              <option value="Greece">{t("countries.Greece")}</option>
+              <option value="Hungary">{t("countries.Hungary")}</option>
+              <option value="Iceland">{t("countries.Iceland")}</option>
+              <option value="India">{t("countries.India")}</option>
+              <option value="Indonesia">{t("countries.Indonesia")}</option>
+              <option value="Iran">{t("countries.Iran")}</option>
+              <option value="Iraq">{t("countries.Iraq")}</option>
+              <option value="Ireland">{t("countries.Ireland")}</option>
+              <option value="Israel">{t("countries.Israel")}</option>
+              <option value="Italy">{t("countries.Italy")}</option>
+              <option value="Japan">{t("countries.Japan")}</option>
+              <option value="Jordan">{t("countries.Jordan")}</option>
+              <option value="Kazakhstan">{t("countries.Kazakhstan")}</option>
+              <option value="Kosovo">{t("countries.Kosovo")}</option>
+              <option value="Kyrgyzstan">{t("countries.Kyrgyzstan")}</option>
+              <option value="Latvia">{t("countries.Latvia")}</option>
+              <option value="Lebanon">{t("countries.Lebanon")}</option>
+              <option value="Libya">{t("countries.Libya")}</option>
+              <option value="Liechtenstein">
+                {t("countries.Liechtenstein")}
+              </option>
+              <option value="Lithuania">{t("countries.Lithuania")}</option>
+              <option value="Luxembourg">{t("countries.Luxembourg")}</option>
+              <option value="Malta">{t("countries.Malta")}</option>
+              <option value="Mexico">{t("countries.Mexico")}</option>
+              <option value="Moldova">{t("countries.Moldova")}</option>
+              <option value="Monaco">{t("countries.Monaco")}</option>
+              <option value="Mongolia">{t("countries.Mongolia")}</option>
+              <option value="Montenegro">{t("countries.Montenegro")}</option>
+              <option value="Morocco">{t("countries.Morocco")}</option>
+              <option value="Netherlands">{t("countries.Netherlands")}</option>
+              <option value="New_Zealand">{t("countries.New_Zealand")}</option>
+              <option value="North Macedonia">
+                {t("countries.North_Macedonia")}
+              </option>
+              <option value="Norway">{t("countries.Norway")}</option>
+              <option value="Oman">{t("countries.Oman")}</option>
+              <option value="Pakistan">{t("countries.Pakistan")}</option>
+              <option value="Peru">{t("countries.Peru")}</option>
+              <option value="Poland">{t("countries.Poland")}</option>
+              <option value="Portugal">{t("countries.Portugal")}</option>
+              <option value="Romania">{t("countries.Romania")}</option>
+              <option value="Russia">{t("countries.Russia")}</option>
+              <option value="San_Marino">{t("countries.San_Marino")}</option>
+              <option value="Saudi_Arabia">
+                {t("countries.Saudi_Arabia")}
+              </option>
+              <option value="Serbia">{t("countries.Serbia")}</option>
+              <option value="Slovakia">{t("countries.Slovakia")}</option>
+              <option value="Slovenia">{t("countries.Slovenia")}</option>
+              <option value="Spain">{t("countries.Spain")}</option>
+              <option value="Sweden">{t("countries.Sweden")}</option>
+              <option value="Switzerland">{t("countries.Switzerland")}</option>
+              <option value="Syria">{t("countries.Syria")}</option>
+              <option value="Tajikistan">{t("countries.Tajikistan")}</option>
+              <option value="Thailand">{t("countries.Thailand")}</option>
+              <option value="Tunisia">{t("countries.Tunisia")}</option>
+              <option value="Turkey">{t("countries.Turkey")}</option>
+              <option value="Turkmenistan">
+                {t("countries.Turkmenistan")}
+              </option>
+              <option value="United_Arab_Emirates">
+                {t("countries.United_Arab_Emirates")}
+              </option>
+              <option value="United_Kingdom">
+                {t("countries.United_Kingdom")}
+              </option>
+              <option value="United_States_of_America">
+                {t("countries.United_States_of_America")}
+              </option>
+              <option value="Uzbekistan">{t("countries.Uzbekistan")}</option>
+              <option value="Venezuela">{t("countries.Venezuela")}</option>
+              <option value="Vietnam">{t("countries.Vietnam")}</option>
+              <option value="Yemen">{t("countries.Yemen")}</option>
             </select>
           </div>
 
           {/* Title Field */}
           <div className="form-control">
-            <label className="label">Title</label>
+            <label className="label">{t("title")}</label>
             <input
               type="text"
               name="title"
@@ -337,7 +357,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
 
           {/* Description Field */}
           <div className="form-control">
-            <label className="label">Description</label>
+            <label className="label">{t("description")}</label>
             <textarea
               name="description"
               value={eventData.description}
@@ -349,7 +369,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
 
           {/* Image Upload */}
           <div className="form-control">
-            <label className="label">Image</label>
+            <label className="label">{t("image")}</label>
             <input
               type="file"
               ref={imageFileRef}
@@ -362,7 +382,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               onClick={handleImageUpload}
               disabled={uploadingImage}
             >
-              {uploadingImage ? "Uploading..." : "Upload Image"}
+              {uploadingImage ? t("uploading") : t("upload_image")}
             </button>
             {uploadingImage && <div>{`Uploading: ${imagePercent}%`}</div>}
             {imageUploadError && (
@@ -371,13 +391,13 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               </div>
             )}
             {imageUploaded && (
-              <div className="text-green-700">Image uploaded successfully</div>
+              <div className="text-green-700">{t("image_success")}</div>
             )}
           </div>
 
           {/* MAP/ITINERARY URL */}
           <div className="form-control">
-            <label className="label">MAP/ITINERARY URL</label>
+            <label className="label">{t("map_itinerary")}</label>
             <input
               type="text"
               name="map"
@@ -390,7 +410,9 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
 
           {/* Coordinates */}
           <div className="form-control">
-            <label className="label">Coordinates (comma-separated)</label>
+            <label className="label">
+              {t("coordinates")} ({t("comma")})
+            </label>
             <input
               type="text"
               name="coordinates"
@@ -399,7 +421,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               onChange={(e) =>
                 setEventData({ ...eventData, coordinates: e.target.value })
               }
-              placeholder="example 48.148598, 17.107748"
+              placeholder={t("example")}
               className="input input-bordered"
               required
               disabled={
@@ -411,7 +433,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
 
           {/* Access Level */}
           <div className="form-control">
-            <label className="label">Access Level</label>
+            <label className="label">{t("access")}</label>
             <select
               name="access"
               value={eventData.access}
@@ -419,16 +441,16 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               className="select select-bordered"
               required
             >
-              <option value="">Select an access</option>
-              <option value={0}>Caravan</option>
-              <option value={1}>Car</option>
-              <option value={2}>Offroad</option>
+              <option value="">{t("select_access")}</option>
+              <option value={0}>{t("caravan")}</option>
+              <option value={1}>{t("car")}</option>
+              <option value={2}>{t("offroad")}</option>
             </select>
           </div>
 
           {/* Date */}
           <div className="form-control">
-            <label className="label">Date</label>
+            <label className="label">{t("date")}</label>
             <input
               type="date"
               name="date"
@@ -445,7 +467,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
             className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 my-2 px-4 rounded-lg"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Updating..." : "Update Event"}
+            {isSubmitting ? t("loading") : t("submit")}
           </button>
 
           {error && <div className="text-red-500">{error}</div>}
