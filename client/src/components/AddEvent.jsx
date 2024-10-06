@@ -187,7 +187,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
           src={discoverEventImage}
           alt="Add New Event"
           onClick={() => navigate("/events/section")}
-          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-lg h-auto my-2 px-4 py-3"
+          className="cursor-pointer w-full max-w-xs sm:max-w-xs md:max-w-sm lg:max-w-md h-auto my-2 px-4 py-3"
           // Add custom styles as needed
         />
         <img
@@ -287,7 +287,6 @@ const AddEvent = ({ onSubmitSuccess }) => {
               <option value="Argentina">{t("countries.Argentina")}</option>
               <option value="Armenia">{t("countries.Armenia")}</option>
               <option value="Australia">{t("countries.Australia")}</option>
-              <option value="Austria">{t("countries.Austria")}</option>
               <option value="Azerbaijan">{t("countries.Azerbaijan")}</option>
               <option value="Belarus">{t("countries.Belarus")}</option>
               <option value="Belgium">{t("countries.Belgium")}</option>
@@ -297,80 +296,69 @@ const AddEvent = ({ onSubmitSuccess }) => {
               </option>
               <option value="Brazil">{t("countries.Brazil")}</option>
               <option value="Bulgaria">{t("countries.Bulgaria")}</option>
-              <option value="Canada">{t("countries.Canada")}</option>
-              <option value="China">{t("countries.China")}</option>
-              <option value="Colombia">{t("countries.Colombia")}</option>
               <option value="Croatia">{t("countries.Croatia")}</option>
               <option value="Cyprus">{t("countries.Cyprus")}</option>
               <option value="Czechia">{t("countries.Czechia")}</option>
+              <option value="Montenegro">{t("countries.Montenegro")}</option>
+              <option value="China">{t("countries.China")}</option>
               <option value="Denmark">{t("countries.Denmark")}</option>
               <option value="Egypt">{t("countries.Egypt")}</option>
               <option value="Estonia">{t("countries.Estonia")}</option>
               <option value="Finland">{t("countries.Finland")}</option>
               <option value="France">{t("countries.France")}</option>
-              <option value="Georgia">{t("countries.Georgia")}</option>
-              <option value="Germany">{t("countries.Germany")}</option>
               <option value="Greece">{t("countries.Greece")}</option>
-              <option value="Hungary">{t("countries.Hungary")}</option>
-              <option value="Iceland">{t("countries.Iceland")}</option>
+              <option value="Georgia">{t("countries.Georgia")}</option>
+              <option value="Netherlands">{t("countries.Netherlands")}</option>
               <option value="India">{t("countries.India")}</option>
               <option value="Indonesia">{t("countries.Indonesia")}</option>
-              <option value="Iran">{t("countries.Iran")}</option>
               <option value="Iraq">{t("countries.Iraq")}</option>
+              <option value="Iran">{t("countries.Iran")}</option>
+              <option value="Iceland">{t("countries.Iceland")}</option>
               <option value="Ireland">{t("countries.Ireland")}</option>
               <option value="Israel">{t("countries.Israel")}</option>
-              <option value="Italy">{t("countries.Italy")}</option>
               <option value="Japan">{t("countries.Japan")}</option>
+              <option value="Yemen">{t("countries.Yemen")}</option>
               <option value="Jordan">{t("countries.Jordan")}</option>
+              <option value="Canada">{t("countries.Canada")}</option>
               <option value="Kazakhstan">{t("countries.Kazakhstan")}</option>
-              <option value="Kosovo">{t("countries.Kosovo")}</option>
               <option value="Kyrgyzstan">{t("countries.Kyrgyzstan")}</option>
-              <option value="Latvia">{t("countries.Latvia")}</option>
+              <option value="Colombia">{t("countries.Colombia")}</option>
+              <option value="Kosovo">{t("countries.Kosovo")}</option>
               <option value="Lebanon">{t("countries.Lebanon")}</option>
               <option value="Libya">{t("countries.Libya")}</option>
               <option value="Liechtenstein">
                 {t("countries.Liechtenstein")}
               </option>
               <option value="Lithuania">{t("countries.Lithuania")}</option>
+              <option value="Latvia">{t("countries.Latvia")}</option>
               <option value="Luxembourg">{t("countries.Luxembourg")}</option>
+              <option value="Hungary">{t("countries.Hungary")}</option>
               <option value="Malta">{t("countries.Malta")}</option>
+              <option value="Morocco">{t("countries.Morocco")}</option>
               <option value="Mexico">{t("countries.Mexico")}</option>
               <option value="Moldova">{t("countries.Moldova")}</option>
               <option value="Monaco">{t("countries.Monaco")}</option>
               <option value="Mongolia">{t("countries.Mongolia")}</option>
-              <option value="Montenegro">{t("countries.Montenegro")}</option>
-              <option value="Morocco">{t("countries.Morocco")}</option>
-              <option value="Netherlands">{t("countries.Netherlands")}</option>
-              <option value="New_Zealand">{t("countries.New_Zealand")}</option>
-              <option value="North Macedonia">
-                {t("countries.North_Macedonia")}
-              </option>
+              <option value="Germany">{t("countries.Germany")}</option>
               <option value="Norway">{t("countries.Norway")}</option>
+              <option value="New_Zealand">{t("countries.New_Zealand")}</option>
               <option value="Oman">{t("countries.Oman")}</option>
               <option value="Pakistan">{t("countries.Pakistan")}</option>
               <option value="Peru">{t("countries.Peru")}</option>
               <option value="Poland">{t("countries.Poland")}</option>
               <option value="Portugal">{t("countries.Portugal")}</option>
+              <option value="Austria">{t("countries.Austria")}</option>
               <option value="Romania">{t("countries.Romania")}</option>
               <option value="Russia">{t("countries.Russia")}</option>
               <option value="San_Marino">{t("countries.San_Marino")}</option>
               <option value="Saudi_Arabia">
                 {t("countries.Saudi_Arabia")}
               </option>
-              <option value="Serbia">{t("countries.Serbia")}</option>
+              <option value="North Macedonia">
+                {t("countries.North_Macedonia")}
+              </option>
               <option value="Slovakia">{t("countries.Slovakia")}</option>
               <option value="Slovenia">{t("countries.Slovenia")}</option>
-              <option value="Spain">{t("countries.Spain")}</option>
-              <option value="Sweden">{t("countries.Sweden")}</option>
-              <option value="Switzerland">{t("countries.Switzerland")}</option>
-              <option value="Syria">{t("countries.Syria")}</option>
-              <option value="Tajikistan">{t("countries.Tajikistan")}</option>
-              <option value="Thailand">{t("countries.Thailand")}</option>
-              <option value="Tunisia">{t("countries.Tunisia")}</option>
-              <option value="Turkey">{t("countries.Turkey")}</option>
-              <option value="Turkmenistan">
-                {t("countries.Turkmenistan")}
-              </option>
               <option value="United_Arab_Emirates">
                 {t("countries.United_Arab_Emirates")}
               </option>
@@ -380,10 +368,22 @@ const AddEvent = ({ onSubmitSuccess }) => {
               <option value="United_States_of_America">
                 {t("countries.United_States_of_America")}
               </option>
+              <option value="Serbia">{t("countries.Serbia")}</option>
+              <option value="Spain">{t("countries.Spain")}</option>
+              <option value="Sweden">{t("countries.Sweden")}</option>
+              <option value="Switzerland">{t("countries.Switzerland")}</option>
+              <option value="Syria">{t("countries.Syria")}</option>
+              <option value="Italy">{t("countries.Italy")}</option>
+              <option value="Tajikistan">{t("countries.Tajikistan")}</option>
+              <option value="Thailand">{t("countries.Thailand")}</option>
+              <option value="Tunisia">{t("countries.Tunisia")}</option>
+              <option value="Turkey">{t("countries.Turkey")}</option>
+              <option value="Turkmenistan">
+                {t("countries.Turkmenistan")}
+              </option>
               <option value="Uzbekistan">{t("countries.Uzbekistan")}</option>
               <option value="Venezuela">{t("countries.Venezuela")}</option>
               <option value="Vietnam">{t("countries.Vietnam")}</option>
-              <option value="Yemen">{t("countries.Yemen")}</option>
             </select>
           </div>
           <div className="form-control">

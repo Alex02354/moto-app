@@ -7,8 +7,15 @@ import {
 } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import OAuth from "../components/OAuth";
+import "../data/i18n";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 export default function SignIn() {
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user);
 
@@ -44,7 +51,7 @@ export default function SignIn() {
     <main className="max-w-7xl mx-auto mt-10">
       <div className="px-4 my-5 max-w-lg mx-auto">
         <h1 className="text-3xl font-bold text-slate-800 my-5 text-center">
-          Sign In
+          {t("signin")}
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
@@ -56,7 +63,7 @@ export default function SignIn() {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder={t("password")}
             id="password"
             className="bg-slate-100 p-3 rounded-lg"
             onChange={handleChange}
@@ -65,14 +72,14 @@ export default function SignIn() {
             disabled={loading}
             className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           >
-            {loading ? "Loading..." : "Sign In"}
+            {loading ? t("loading") : t("signin")}
           </button>
           <OAuth />
         </form>
         <div className="flex gap-2 mt-5">
-          <p>Dont Have an account?</p>
+          <p>{t("account")}</p>
           <Link to="/sign-up">
-            <span className="text-blue-500">Sign up</span>
+            <span className="text-blue-500">{t("signup")}</span>
           </Link>
         </div>
         <p className="text-red-700 mt-5">
