@@ -121,6 +121,13 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
   };
 
   const handleBlur = () => {
+    // Remove error if the coordinates field is empty or only contains spaces
+    if (!eventData.coordinates.trim()) {
+      setError(null); // Clear error
+      return;
+    }
+
+    // Validate the format of the coordinates if not empty
     if (!validateCoordinates(eventData.coordinates)) {
       setError(t("coordinates_warning"));
     } else {
@@ -128,10 +135,15 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
     }
   };
 
+  // Section main and sub logic
   const handleSectionChange = (mainSection) => {
     setEventData((prevData) => ({
       ...prevData,
       section: { ...prevData.section, main: mainSection, sub: "" },
+      coordinates:
+        mainSection === "route" || mainSection === "itinerary"
+          ? ""
+          : prevData.coordinates, // Clear coordinates if route or itinerary
     }));
   };
 
@@ -430,7 +442,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               }
             />
           </div>
-
+          {error && <div className="text-red-500">{error}</div>}
           {/* Access Level */}
           <div className="form-control">
             <label className="label">{t("access")}</label>
@@ -469,8 +481,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
           >
             {isSubmitting ? t("loading") : t("submit")}
           </button>
-
-          {error && <div className="text-red-500">{error}</div>}
         </form>
       </Modal>
     </>
