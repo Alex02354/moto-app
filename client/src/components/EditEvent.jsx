@@ -9,27 +9,32 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { app } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import { app } from "../firebase"; // Adjust the path as necessary
 import "../data/i18n";
 import { useTranslation } from "react-i18next";
 
 const EditEvent = ({ event, onSubmitSuccess }) => {
   const { t, i18n } = useTranslation();
+
+  // Set language based on browser's default language
   useEffect(() => {
     i18n.changeLanguage(navigator.language);
-  }, []);
+  }, [i18n]);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [eventData, setEventData] = useState({
-    title: "",
-    description: "",
-    image: "",
-    map: "",
-    coordinates: "",
-    access: "",
-    date: "",
-    section: { main: "", sub: "" },
-    country: "",
+    title: event.title,
+    description: event.description,
+    image: event.image,
+    map: event.map,
+    coordinates: event.coordinates.join(","),
+    access: event.access.toString(),
+    date: event.date,
+    section: {
+      main: event.section?.main || "",
+      sub: event.section?.sub || "",
+    },
+    country: event.country,
   });
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -39,20 +44,13 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
   const [imageUploaded, setImageUploaded] = useState(false);
   const imageFileRef = useRef(null);
 
-  const user = useSelector((state) => state.user);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (event) {
-      setEventData(event); // Pre-fill with event data
-    }
-  }, [event]);
+  const user = useSelector((state) => state.user); // Replace with the actual path to the user in your Redux state
 
   const handleFileUpload = useCallback(async (fileRef, type) => {
     const file = fileRef.current.files[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
+    if (file.size > 4 * 1024 * 1024) {
       setImageUploadError("File size must be less than 2 MB");
       return;
     }
@@ -98,15 +96,45 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setIsSubmitting(true);
+
     try {
-      await axios.put(`/api/events/${event._id}`, {
+      const formattedCoordinates =
+        (eventData.section.main === "itinerary" ||
+          eventData.section.main === "route") &&
+        !eventData.coordinates.trim()
+          ? [] // Set coordinates to an empty array if no values entered and section is itinerary or route
+          : eventData.coordinates.split(",").map(Number);
+
+      // Prepare the data to be submitted, including the image only if it was uploaded
+      const submissionData = {
         ...eventData,
-        access: parseInt(eventData.access, 10),
-        coordinates: eventData.coordinates.split(",").map(Number),
+        access: parseInt(eventData.access, 10), // Ensure access is an integer
+        coordinates: formattedCoordinates,
         user,
-      });
+      };
+
+      // Only include the `image` if it has been uploaded
+      if (!imageUploaded) {
+        delete submissionData.image;
+      }
+
+      await axios.put(`/api/events/${event._id}`, submissionData);
+
       setModalOpen(false);
+      setEventData({
+        title: "",
+        description: "",
+        image: "",
+        map: "",
+        coordinates: "",
+        access: "",
+        date: "",
+        section: { main: "camp", sub: "natural" },
+        country: "",
+      });
+      setImageUploaded(false); // Reset image upload status
       onSubmitSuccess();
     } catch (err) {
       setError(err.message);
@@ -115,6 +143,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
     }
   };
 
+  // Coordinates regex validation
   const validateCoordinates = (input) => {
     const regex = /^\d{2}\.\d{0,6},\s?\d{2}\.\d{0,6}$/;
     return regex.test(input);
@@ -165,7 +194,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
       <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
           <h3 className="text-xl font-bold mb-4">{t("edit_event")}</h3>
-          {/* Main Section */}
+
           <div className="form-control">
             <label className="label">{t("main_section")}</label>
             <select
@@ -182,8 +211,7 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               <option value="places">{t("places")}</option>
             </select>
           </div>
-
-          {/* Sub-sections based on the selected Main Section */}
+          {/* Conditionally render the sub-section select based on the main section */}
           {eventData.section.main === "camp" && (
             <div className="form-control">
               <label className="label">{t("camp_subsection")}</label>
@@ -235,8 +263,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               </select>
             </div>
           )}
-
-          {/* Country Field */}
           <div className="form-control">
             <label className="label">{t("country")}</label>
             <select
@@ -353,8 +379,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               <option value="Vietnam">{t("countries.Vietnam")}</option>
             </select>
           </div>
-
-          {/* Title Field */}
           <div className="form-control">
             <label className="label">{t("title")}</label>
             <input
@@ -366,8 +390,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               required
             />
           </div>
-
-          {/* Description Field */}
           <div className="form-control">
             <label className="label">{t("description")}</label>
             <textarea
@@ -378,8 +400,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               required
             />
           </div>
-
-          {/* Image Upload */}
           <div className="form-control">
             <label className="label">{t("image")}</label>
             <input
@@ -406,8 +426,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               <div className="text-green-700">{t("image_success")}</div>
             )}
           </div>
-
-          {/* MAP/ITINERARY URL */}
           <div className="form-control">
             <label className="label">{t("map_itinerary")}</label>
             <input
@@ -419,8 +437,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               required
             />
           </div>
-
-          {/* Coordinates */}
           <div className="form-control">
             <label className="label">
               {t("coordinates")} ({t("comma")})
@@ -436,14 +452,15 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               placeholder={t("example")}
               className="input input-bordered"
               required
+              // Disable the coordinates field if section.main is 'route' or 'itinerary'
               disabled={
                 eventData.section.main === "route" ||
                 eventData.section.main === "itinerary"
               }
             />
           </div>
+
           {error && <div className="text-red-500">{error}</div>}
-          {/* Access Level */}
           <div className="form-control">
             <label className="label">{t("access")}</label>
             <select
@@ -459,12 +476,10 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
               <option value={2}>{t("offroad")}</option>
             </select>
           </div>
-
-          {/* Date */}
           <div className="form-control">
             <label className="label">{t("date")}</label>
             <input
-              type="date"
+              type="date" // Change input type to "date" to restrict time selection
               name="date"
               value={eventData.date}
               onChange={handleChange}
@@ -473,7 +488,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="bg-slate-700 hover:bg-slate-800 text-white font-bold py-3 my-2 px-4 rounded-lg"
@@ -488,7 +502,6 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
 };
 
 EditEvent.propTypes = {
-  event: PropTypes.object.isRequired,
   onSubmitSuccess: PropTypes.func.isRequired,
 };
 

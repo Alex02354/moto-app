@@ -61,7 +61,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
     const file = fileRef.current.files[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
+    if (file.size > 4 * 1024 * 1024) {
       setImageUploadError("File size must be less than 2 MB");
       return;
     }
@@ -112,13 +112,22 @@ const AddEvent = ({ onSubmitSuccess }) => {
       return;
     }
     setIsSubmitting(true);
+
     try {
+      const formattedCoordinates =
+        (eventData.section.main === "itinerary" ||
+          eventData.section.main === "route") &&
+        !eventData.coordinates.trim()
+          ? [] // Set coordinates to an empty array if no values entered and section is itinerary or route
+          : eventData.coordinates.split(",").map(Number);
+
       await axios.post("/api/events", {
         ...eventData,
         access: parseInt(eventData.access, 10), // Ensure access is an integer
-        coordinates: eventData.coordinates.split(",").map(Number),
+        coordinates: formattedCoordinates,
         user, // Include the user in the event data
       });
+
       setModalOpen(false);
       setEventData({
         title: "",
