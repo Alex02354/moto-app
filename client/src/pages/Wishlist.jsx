@@ -85,7 +85,7 @@ const Wishlist = () => {
   if (!currentUser) {
     return (
       <div className="text-center my-5">
-        <p>You must be signed in to view your wishlist events.</p>
+        <p>{t("wishlist_warn")}</p>
       </div>
     );
   }

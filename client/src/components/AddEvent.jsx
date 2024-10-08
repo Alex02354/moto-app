@@ -61,7 +61,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
     const file = fileRef.current.files[0];
     if (!file) return;
 
-    if (file.size > 4 * 1024 * 1024) {
+    if (file.size > 2 * 1024 * 1024) {
       setImageUploadError("File size must be less than 2 MB");
       return;
     }
@@ -133,7 +133,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
         title: "",
         description: "",
         image: "",
-        map: "",
+        map: "", // Reset map field after successful submission
         coordinates: "",
         access: "",
         date: "",
@@ -148,7 +148,6 @@ const AddEvent = ({ onSubmitSuccess }) => {
       setIsSubmitting(false);
     }
   };
-
   // Coordinates regex validation
   const validateCoordinates = (input) => {
     const regex = /^\d{2}\.\d{0,6},\s?\d{2}\.\d{0,6}$/;
@@ -188,6 +187,9 @@ const AddEvent = ({ onSubmitSuccess }) => {
       section: { ...prevData.section, sub: subSection },
     }));
   };
+
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <>
@@ -451,7 +453,6 @@ const AddEvent = ({ onSubmitSuccess }) => {
               value={eventData.map}
               onChange={handleChange}
               className="input input-bordered"
-              required
             />
           </div>
           <div className="form-control">
@@ -496,11 +497,12 @@ const AddEvent = ({ onSubmitSuccess }) => {
           <div className="form-control">
             <label className="label">{t("date")}</label>
             <input
-              type="date" // Change input type to "date" to restrict time selection
+              type="date"
               name="date"
               value={eventData.date}
               onChange={handleChange}
               className="input input-bordered"
+              max={today} // Restrict future dates
               required
             />
           </div>

@@ -1,9 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Events from "./Events"; // Adjust the import path accordingly
+import "../data/i18n";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 const MyEvents = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+    i18n.changeLanguage(navigator.language);
+  }, []);
 
   if (loading) {
     return (
@@ -32,7 +39,7 @@ const MyEvents = () => {
         {currentUser ? (
           <Events currentUserId={currentUser._id} hideAddEvent={true} />
         ) : (
-          <p>You must be signed in to view your events.</p>
+          <p>{t("signin_warn")}</p>
         )}
       </div>
     </main>

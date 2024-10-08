@@ -29,6 +29,18 @@ const EventDetail = () => {
     return t(`countries.${countryName}`, { defaultValue: countryName });
   };
 
+  // Helper function to translate the main section
+  const translateMainSection = (mainSection) => {
+    return t(`sections.${mainSection}`, { defaultValue: mainSection });
+  };
+
+  // Helper function to translate the subsection based on the main section
+  const translateSubSection = (mainSection, subSection) => {
+    // Dynamically map subsection translations based on main section type
+    const sectionType = `${mainSection}Sections`;
+    return t(`${sectionType}.${subSection}`, { defaultValue: subSection });
+  };
+
   const { id } = useParams();
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
@@ -149,7 +161,10 @@ const EventDetail = () => {
             <div className="flex flex-col md:flex-row gap-8">
               <div className="md:w-1/2 w-full flex flex-col gap-4">
                 <div className="text-left">
-                  <p className="mb-4" style={{ whiteSpace: "pre-wrap" }}>
+                  <p
+                    className="mb-4"
+                    style={{ whiteSpace: "pre-wrap", textAlign: "justify" }}
+                  >
                     {event.description}
                   </p>
                   <p className="mb-2">
@@ -162,6 +177,11 @@ const EventDetail = () => {
                   <p className="mb-2">
                     <strong>{t("country")}:</strong>{" "}
                     {translateCountry(event.country)}
+                  </p>
+                  <p className="mb-2">
+                    <strong>{t("section")}:</strong>{" "}
+                    {translateMainSection(event.section.main)}{" "}
+                    {translateSubSection(event.section.main, event.section.sub)}
                   </p>
                   {event.user && event.user.currentUser && (
                     <p>
