@@ -259,7 +259,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
               >
                 <option value="">{t("select_sub_section")}</option>
                 <option value="offroad">{t("offroad")}</option>
-                <option value="caravan/car">{t("caravan_car")}</option>
+                <option value="caravan_car">{t("caravan_car")}</option>
               </select>
             </div>
           )}
