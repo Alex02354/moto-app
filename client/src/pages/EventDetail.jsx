@@ -158,70 +158,77 @@ const EventDetail = () => {
               alt={event.title}
               className="w-full h-auto object-cover rounded-lg shadow-lg"
             />
-            <div className="flex flex-col md:flex-row gap-8">
-              <div className="md:w-1/2 w-full flex flex-col gap-4">
-                <div className="text-left">
-                  <p
-                    className="mb-4"
-                    style={{ whiteSpace: "pre-wrap", textAlign: "justify" }}
-                  >
-                    {event.description}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("access")}:</strong> {renderAccessIcon()}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("date")}:</strong>{" "}
-                    {new Date(event.date).toLocaleDateString()}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("country")}:</strong>{" "}
-                    {translateCountry(event.country)}
-                  </p>
-                  <p className="mb-2">
-                    <strong>{t("section")}:</strong>{" "}
-                    {translateMainSection(event.section.main)}{" "}
-                    {translateSubSection(event.section.main, event.section.sub)}
-                  </p>
-                  {event.user && event.user.currentUser && (
-                    <p>
-                      <strong>{t("created_by")}:</strong>{" "}
-                      {event.user.currentUser.username}
+            <div className="flex flex-col md:flex-column gap-8">
+              <p
+                className="mb-4"
+                style={{ whiteSpace: "pre-wrap", textAlign: "justify" }}
+              >
+                {event.description}
+              </p>
+
+              <div className="flex flex-col md:flex-row gap-8">
+                <div className="md:w-1/2 w-full flex flex-col gap-4">
+                  <div className="text-left">
+                    <p className="mb-2">
+                      <strong>{t("access")}:</strong> {renderAccessIcon()}
                     </p>
-                  )}
-                  <button
-                    onClick={handleWishlistToggle}
-                    className={`mt-4 p-2 rounded-lg ${
-                      isWishlisted ? "bg-red-600" : "bg-gray-600"
-                    } text-white`}
-                  >
-                    <FontAwesomeIcon
-                      icon={isWishlisted ? faHeartBroken : faHeart}
-                    />
-                    {isWishlisted ? t("rfw") : t("atw")}
-                  </button>
-                  {isEventOwner && (
-                    <div className="flex gap-4 mt-4">
-                      <EditEvent event={event} onSubmitSuccess={fetchEvent} />
-                      <DeleteEvent
-                        eventId={event._id}
-                        onDeleteSuccess={handleDeleteSuccess}
+                    <p className="mb-2">
+                      <strong>{t("date")}:</strong>{" "}
+                      {new Date(event.date).toLocaleDateString()}
+                    </p>
+                    <p className="mb-2">
+                      <strong>{t("country")}:</strong>{" "}
+                      {translateCountry(event.country)}
+                    </p>
+                    <p className="mb-2">
+                      <strong>{t("section")}:</strong>{" "}
+                      {translateMainSection(event.section.main)}{" "}
+                      {translateSubSection(
+                        event.section.main,
+                        event.section.sub
+                      )}
+                    </p>
+                    {event.user && event.user.currentUser && (
+                      <p>
+                        <strong>{t("created_by")}:</strong>{" "}
+                        {event.user.currentUser.username}
+                      </p>
+                    )}
+                    <button
+                      onClick={handleWishlistToggle}
+                      className={`mt-4 p-2 rounded-lg ${
+                        isWishlisted ? "bg-red-600" : "bg-gray-600"
+                      } text-white`}
+                    >
+                      <FontAwesomeIcon
+                        icon={isWishlisted ? faHeartBroken : faHeart}
                       />
-                    </div>
-                  )}
+                      {isWishlisted ? t("rfw") : t("atw")}
+                    </button>
+                    {isEventOwner && (
+                      <div className="flex gap-4 mt-4">
+                        <EditEvent event={event} onSubmitSuccess={fetchEvent} />
+                        <DeleteEvent
+                          eventId={event._id}
+                          onDeleteSuccess={handleDeleteSuccess}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
+
+                {isLoaded && coordinates && (
+                  <div className="md:w-1/2 w-full h-96 rounded-lg overflow-hidden">
+                    <GoogleMap
+                      mapContainerStyle={{ width: "100%", height: "100%" }}
+                      center={coordinates}
+                      zoom={10}
+                    >
+                      <Marker position={coordinates} />
+                    </GoogleMap>
+                  </div>
+                )}
               </div>
-              {isLoaded && coordinates && (
-                <div className="md:w-1/2 w-full h-96 rounded-lg overflow-hidden">
-                  <GoogleMap
-                    mapContainerStyle={{ width: "100%", height: "100%" }}
-                    center={coordinates}
-                    zoom={10}
-                  >
-                    <Marker position={coordinates} />
-                  </GoogleMap>
-                </div>
-              )}
             </div>
             {event.map && (
               <a

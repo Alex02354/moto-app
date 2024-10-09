@@ -279,7 +279,7 @@ const Events = ({
               </Link>
             ))
           ) : (
-            <p>No events available</p>
+            <p>{t("noevents")}</p>
           )}
         </div>
       </div>

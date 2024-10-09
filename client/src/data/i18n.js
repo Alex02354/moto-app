@@ -90,6 +90,7 @@ i18n.use(initReactI18next).init({
         have_account: "Have an account?",
         signin_warn: "You must be signed in to view your events.",
         wishlist_warn: "You must be signed in to view your wishlist events.",
+        noevents: "No events available.",
         countries: {
           Afghanistan: "Afghanistan",
           Albania: "Albania",
@@ -291,6 +292,7 @@ i18n.use(initReactI18next).init({
         have_account: "Máte účet?",
         signin_warn: "Prihláste sa, aby ste videli svoje udalosti.",
         wishlist_warn: "Prihláste sa, aby ste videli svoje obľúbené udalosti.",
+        noevents: "Nevytvorili ste žiadne udalosti.",
         countries: {
           Afghanistan: "Afganistan",
           Albania: "Albánsko",
