@@ -50,8 +50,8 @@ const EditEvent = ({ event, onSubmitSuccess }) => {
     const file = fileRef.current.files[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      setImageUploadError("File size must be less than 2 MB");
+    if (file.size > 5 * 1024 * 1024) {
+      setImageUploadError("File size must be less than 5 MB");
       return;
     }
 
