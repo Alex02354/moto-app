@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Events from "./Events";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 // Import images for both languages
 import campsEn from "../assets/images/camps.png";
@@ -11,6 +12,7 @@ import createdEn from "../assets/images/camps - created.png";
 import createdSk from "../assets/images/kempy - umele.png";
 
 const Camps = ({ section, subsection }) => {
+  const navigate = useNavigate();
   const { i18n } = useTranslation();
 
   // Change language based on the browser's default language

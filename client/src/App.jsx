@@ -48,7 +48,7 @@ export default function App() {
         />
         <Route
           path="/events/route/caravan"
-          element={<Caravan section="route" subsection="caravan/car" />}
+          element={<Caravan section="route" subsection="caravan_car" />}
         />
         <Route
           path="/events/places/nature"
@@ -65,7 +65,7 @@ export default function App() {
         <Route
           path="/events/route"
           element={
-            <Routes2 section="route" subsection={["offroad", "caravan/car"]} />
+            <Routes2 section="route" subsection={["offroad", "caravan_car"]} />
           }
         />
         <Route
