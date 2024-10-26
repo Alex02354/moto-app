@@ -38,20 +38,26 @@ const AddEvent = ({ onSubmitSuccess }) => {
     title: "",
     description: "",
     image: "",
+    gpxFile: "", // New state for the GPX file URL
     map: "",
     coordinates: "",
     access: "",
     date: "",
     section: { main: "", sub: "" },
-    country: "", // Add country to the state
+    country: "",
   });
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageUploadError, setImageUploadError] = useState(false);
+  const [gpxUploadError, setGpxUploadError] = useState(false); // New state for GPX upload error
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingGpx, setUploadingGpx] = useState(false); // New state for GPX uploading status
   const [imagePercent, setImagePercent] = useState(0);
+  const [gpxPercent, setGpxPercent] = useState(0); // New state for GPX upload progress
   const [imageUploaded, setImageUploaded] = useState(false);
+  const [gpxUploaded, setGpxUploaded] = useState(false); // New state for GPX upload status
   const imageFileRef = useRef(null);
+  const gpxFileRef = useRef(null); // New ref for the GPX file input
 
   const user = useSelector((state) => state.user); // Replace with the actual path to the user in your Redux state
 
@@ -61,44 +67,69 @@ const AddEvent = ({ onSubmitSuccess }) => {
     const file = fileRef.current.files[0];
     if (!file) return;
 
+    // File size validation
     if (file.size > 5 * 1024 * 1024) {
-      setImageUploadError("File size must be less than 5 MB");
+      if (type === "image") {
+        setImageUploadError("File size must be less than 5 MB");
+      } else {
+        setGpxUploadError("File size must be less than 5 MB");
+      }
       return;
     }
 
     const storage = getStorage(app);
     const fileName = `${new Date().getTime()}_${file.name}`;
     const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const uploadTask = uploadBytesResumable(storageRef, file, {
+      contentType: type === "image" ? file.type : "application/gpx+xml",
+    });
 
-    setUploadingImage(true);
+    if (type === "image") setUploadingImage(true);
+    if (type === "gpx") setUploadingGpx(true);
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setImagePercent(Math.round(progress));
+        if (type === "image") setImagePercent(Math.round(progress));
+        if (type === "gpx") setGpxPercent(Math.round(progress));
       },
       (error) => {
-        setImageUploadError(true);
-        setUploadingImage(false);
+        if (type === "image") {
+          setImageUploadError(true);
+          setUploadingImage(false);
+        } else {
+          setGpxUploadError(true);
+          setUploadingGpx(false);
+        }
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setEventData((prevEventData) => ({
-            ...prevEventData,
-            image: downloadURL,
-          }));
-          setUploadingImage(false);
-          setImageUploadError(false);
-          setImageUploaded(true);
+          if (type === "image") {
+            setEventData((prevEventData) => ({
+              ...prevEventData,
+              image: downloadURL,
+            }));
+            setUploadingImage(false);
+            setImageUploadError(false);
+            setImageUploaded(true);
+          } else {
+            setEventData((prevEventData) => ({
+              ...prevEventData,
+              gpxFile: downloadURL,
+            }));
+            setUploadingGpx(false);
+            setGpxUploadError(false);
+            setGpxUploaded(true);
+          }
         });
       }
     );
   }, []);
 
   const handleImageUpload = () => handleFileUpload(imageFileRef, "image");
+  const handleGpxUpload = () => handleFileUpload(gpxFileRef, "gpx"); // New function for handling GPX file upload
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -111,6 +142,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
       setError(t("image_first"));
       return;
     }
+
     setIsSubmitting(true);
 
     try {
@@ -118,14 +150,14 @@ const AddEvent = ({ onSubmitSuccess }) => {
         (eventData.section.main === "itinerary" ||
           eventData.section.main === "route") &&
         !eventData.coordinates.trim()
-          ? [] // Set coordinates to an empty array if no values entered and section is itinerary or route
+          ? []
           : eventData.coordinates.split(",").map(Number);
 
       await axios.post("/api/events", {
         ...eventData,
-        access: parseInt(eventData.access, 10), // Ensure access is an integer
+        access: parseInt(eventData.access, 10),
         coordinates: formattedCoordinates,
-        user, // Include the user in the event data
+        user,
       });
 
       setModalOpen(false);
@@ -133,14 +165,16 @@ const AddEvent = ({ onSubmitSuccess }) => {
         title: "",
         description: "",
         image: "",
-        map: "", // Reset map field after successful submission
+        gpxFile: "", // Reset GPX file field after submission
+        map: "",
         coordinates: "",
         access: "",
         date: "",
         section: { main: "camp", sub: "natural" },
         country: "",
       });
-      setImageUploaded(false); // Reset image upload status
+      setImageUploaded(false);
+      setGpxUploaded(false); // Reset GPX upload status
       onSubmitSuccess();
     } catch (err) {
       setError(err.message);
@@ -148,6 +182,7 @@ const AddEvent = ({ onSubmitSuccess }) => {
       setIsSubmitting(false);
     }
   };
+
   // Coordinates regex validation
   const validateCoordinates = (input) => {
     const regex = /^\d{2}\.\d{0,6},\s?\d{2}\.\d{0,6}$/;
@@ -443,6 +478,37 @@ const AddEvent = ({ onSubmitSuccess }) => {
             )}
             {imageUploaded && (
               <div className="text-green-700">{t("image_success")}</div>
+            )}
+          </div>
+          {/* New input for GPX file upload */}
+          <div className="form-control">
+            <label className="label">{t("gpx_file")}</label>
+            <input
+              type="file"
+              ref={gpxFileRef}
+              accept=".gpx"
+              className="input input-bordered"
+              required={
+                eventData.section.main === "route" ||
+                eventData.section.main === "itinerary"
+              }
+            />
+            <button
+              type="button"
+              className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 my-2 px-4 rounded-lg"
+              onClick={handleGpxUpload}
+              disabled={uploadingGpx}
+            >
+              {uploadingGpx ? t("uploading_gpx") : t("upload_gpx")}
+            </button>
+            {uploadingGpx && <div>{`Uploading: ${gpxPercent}%`}</div>}
+            {gpxUploadError && (
+              <div className="text-red-500">
+                Error uploading GPX file: {gpxUploadError}
+              </div>
+            )}
+            {gpxUploaded && (
+              <div className="text-green-700">{t("gpx_success")}</div>
             )}
           </div>
           <div className="form-control">

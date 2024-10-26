@@ -91,6 +91,8 @@ i18n.use(initReactI18next).init({
         signin_warn: "You must be signed in to view your events.",
         wishlist_warn: "You must be signed in to view your wishlist events.",
         noevents: "No events available.",
+        gpx_file: "GPX file",
+        upload_gpx: "Upload GPX file",
         countries: {
           Afghanistan: "Afghanistan",
           Albania: "Albania",
@@ -293,6 +295,8 @@ i18n.use(initReactI18next).init({
         signin_warn: "Prihláste sa, aby ste videli svoje udalosti.",
         wishlist_warn: "Prihláste sa, aby ste videli svoje obľúbené udalosti.",
         noevents: "Nevytvorili ste žiadne udalosti.",
+        gpx_file: "GPX súbor",
+        upload_gpx: "Nahrať GPX súbor",
         countries: {
           Afghanistan: "Afganistan",
           Albania: "Albánsko",

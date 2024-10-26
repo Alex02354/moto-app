@@ -16,6 +16,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "../data/i18n";
 import { useTranslation } from "react-i18next";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase"; // Adjust the path as necessary
+import { faDownload } from "@fortawesome/free-solid-svg-icons";
 
 const EventDetail = () => {
   const { t, i18n } = useTranslation();
@@ -41,6 +49,7 @@ const EventDetail = () => {
     return t(`${sectionType}.${subSection}`, { defaultValue: subSection });
   };
 
+  const storage = getStorage(app);
   const { id } = useParams();
   const navigate = useNavigate();
   const [event, setEvent] = useState(null);
@@ -107,6 +116,35 @@ const EventDetail = () => {
     }
   };
 
+  const handleDownloadGPX = async () => {
+    if (!event.gpxFile) {
+      alert("No GPX file available for this event.");
+      return;
+    }
+
+    try {
+      // Extract the file name from the URL.
+      const gpxFileName = event.gpxFile.split("/").pop().split("?")[0];
+
+      // Get the GPX file reference from Firebase Storage using the extracted file name.
+      const gpxRef = ref(storage, `${gpxFileName}`);
+
+      // Get the download URL for the GPX file.
+      const downloadURL = await getDownloadURL(gpxRef);
+
+      // Create an anchor element and trigger a download.
+      const link = document.createElement("a");
+      link.href = downloadURL;
+      link.download = gpxFileName; // Set the file name for the download.
+      link.click();
+
+      alert("GPX file downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading GPX file:", error);
+      alert("Failed to download the GPX file. Please try again later.");
+    }
+  };
+
   if (loading)
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -152,7 +190,7 @@ const EventDetail = () => {
           <h1 className="text-4xl font-bold mb-6 text-slate-800 text-center">
             {event.title}
           </h1>
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
             <img
               src={event.image}
               alt={event.title}
@@ -196,15 +234,16 @@ const EventDetail = () => {
                     )}
                     <button
                       onClick={handleWishlistToggle}
-                      className={`mt-4 p-2 rounded-lg ${
+                      className={`mt-4 p-3 rounded-lg ${
                         isWishlisted ? "bg-red-600" : "bg-gray-600"
-                      } text-white`}
+                      } text-white font-semibold`}
                     >
                       <FontAwesomeIcon
                         icon={isWishlisted ? faHeartBroken : faHeart}
                       />
                       {isWishlisted ? t("rfw") : t("atw")}
                     </button>
+
                     {isEventOwner && (
                       <div className="flex gap-4 mt-4">
                         <EditEvent event={event} onSubmitSuccess={fetchEvent} />
@@ -241,6 +280,13 @@ const EventDetail = () => {
                 {t("map_link")}
               </a>
             )}
+            <button
+              onClick={handleDownloadGPX}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg text=center"
+            >
+              <FontAwesomeIcon icon={faDownload} style={{ marginRight: 10 }} />
+              {t("gpx_file")}
+            </button>
           </div>
         </div>
       </div>

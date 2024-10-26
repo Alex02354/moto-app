@@ -83,7 +83,7 @@ export default function App() {
         />
         <Route
           path="/events/itinerary"
-          element={<Itinerary section="itinerary" subsection=" " />}
+          element={<Itinerary section="itinerary" subsection="" />}
         />
         <Route
           path="/events/section"
