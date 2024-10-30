@@ -488,10 +488,10 @@ const AddEvent = ({ onSubmitSuccess }) => {
               ref={gpxFileRef}
               accept=".gpx"
               className="input input-bordered"
-              required={
+              /*          required={
                 eventData.section.main === "route" ||
                 eventData.section.main === "itinerary"
-              }
+              } */
             />
             <button
               type="button"
