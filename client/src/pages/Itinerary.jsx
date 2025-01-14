@@ -15,7 +15,7 @@ const Itinerary = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select the image based on the language
-  const itineraryImage = i18n.language === "sk" ? itinerariesSk : itinerariesEn;
+  const itineraryImage = itinerariesSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

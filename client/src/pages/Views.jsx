@@ -15,7 +15,7 @@ const Views = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select the image based on the language
-  const viewsImage = i18n.language === "sk" ? viewsSk : viewsEn;
+  const viewsImage = viewsSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

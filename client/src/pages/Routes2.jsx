@@ -21,9 +21,9 @@ const Routes2 = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select the images based on the language
-  const routesImage = i18n.language === "sk" ? routesSk : routesEn;
-  const caravanImage = i18n.language === "sk" ? caravanSk : caravanEn;
-  const offroadImage = i18n.language === "sk" ? offroadSk : offroadEn;
+  const routesImage = routesSk;
+  const caravanImage = caravanSk;
+  const offroadImage = offroadSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

@@ -17,7 +17,7 @@ const Natural = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select the image based on the language
-  const naturalImage = i18n.language === "sk" ? naturalSk : naturalEn;
+  const naturalImage = naturalSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

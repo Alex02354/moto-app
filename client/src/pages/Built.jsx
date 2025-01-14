@@ -17,7 +17,7 @@ const Built = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select the image based on the language
-  const builtImage = i18n.language === "sk" ? builtSk : builtEn;
+  const builtImage = builtSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

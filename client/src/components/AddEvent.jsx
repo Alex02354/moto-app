@@ -29,9 +29,8 @@ const AddEvent = ({ onSubmitSuccess }) => {
   }, [i18n]);
 
   // Determine the correct image based on the current language
-  const addEventImage = i18n.language === "sk" ? addImageSk : addImageEn;
-  const discoverEventImage =
-    i18n.language === "sk" ? discoverImageSk : discoverImageEn;
+  const addEventImage = addImageSk;
+  const discoverEventImage = discoverImageSk;
 
   const [modalOpen, setModalOpen] = useState(false);
   const [eventData, setEventData] = useState({

@@ -23,11 +23,10 @@ const Section = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select images based on the current language
-  const placesImage = i18n.language === "sk" ? placesSk : placesEn;
-  const routesImage = i18n.language === "sk" ? routesSk : routesEn;
-  const campsImage = i18n.language === "sk" ? campsSk : campsEn;
-  const itinerariesImage =
-    i18n.language === "sk" ? itinerariesSk : itinerariesEn;
+  const placesImage = placesSk;
+  const routesImage = routesSk;
+  const campsImage = campsSk;
+  const itinerariesImage = itinerariesSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

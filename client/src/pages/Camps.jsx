@@ -21,9 +21,9 @@ const Camps = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select images based on the language
-  const campsImage = i18n.language === "sk" ? campsSk : campsEn;
-  const naturalImage = i18n.language === "sk" ? naturalSk : naturalEn;
-  const createdImage = i18n.language === "sk" ? createdSk : createdEn;
+  const campsImage = campsSk;
+  const naturalImage = naturalSk;
+  const createdImage = createdSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

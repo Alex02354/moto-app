@@ -15,7 +15,7 @@ const Caravan = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select the image based on the language
-  const caravanImage = i18n.language === "sk" ? caravanSk : caravanEn;
+  const caravanImage = caravanSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

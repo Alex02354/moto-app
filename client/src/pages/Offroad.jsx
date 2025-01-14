@@ -15,7 +15,7 @@ const Offroad = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select the image based on the language
-  const offroadImage = i18n.language === "sk" ? offroadSk : offroadEn;
+  const offroadImage = offroadSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">

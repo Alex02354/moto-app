@@ -23,10 +23,10 @@ const Places = ({ section, subsection }) => {
   }, [i18n]);
 
   // Select images based on the current language
-  const placesImage = i18n.language === "sk" ? placesSk : placesEn;
-  const naturalImage = i18n.language === "sk" ? naturalSk : naturalEn;
-  const builtImage = i18n.language === "sk" ? builtSk : builtEn;
-  const viewsImage = i18n.language === "sk" ? viewsSk : viewsEn;
+  const placesImage = placesSk;
+  const naturalImage = naturalSk;
+  const builtImage = builtSk;
+  const viewsImage = viewsSk;
 
   return (
     <main className="max-w-7xl mx-auto mt-10">
